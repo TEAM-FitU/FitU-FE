@@ -1,1 +1,1 @@
-# outfina-FE
+# FitU-FE

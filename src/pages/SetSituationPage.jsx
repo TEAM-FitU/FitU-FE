@@ -1,9 +1,9 @@
 import React from "react";
 import Header from "../components/Header";
 
-const SetSituation = () => {
+const SetSituationPage = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#F7F7F7]">
       <Header />
       <main className="flex flex-1 justify-center">
         <div className="w-full max-w-xl">
@@ -72,4 +72,4 @@ const SetSituation = () => {
   );
 };
 
-export default SetSituation;
+export default SetSituationPage;

@@ -78,6 +78,7 @@ function AttributeSelectors({ attributes, onAttributeChange, isAnalyzed }) {
         menuList: (provided) => ({
             ...provided,
             padding: "0.25rem 0",
+            maxHeight: "150px", // 드롭다운 리스트 최대 높이 제한
         }),
         option: (provided, state) => ({
             ...provided,

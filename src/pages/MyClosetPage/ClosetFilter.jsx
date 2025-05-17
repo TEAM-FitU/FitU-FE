@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import { CLOTHING_CATEGORIES, CLOTHING_TYPES, PATTERN_TYPES, COLOR_TONES } from "../../constants/clothingAttributes"; // 경로 확인 필요
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
+import { CheckIcon, ChevronDownIcon, ArrowPathIcon, PlusIcon } from "@heroicons/react/20/solid";
 
 // 옵션 배열
 const categoryOptions = [...Object.values(CLOTHING_CATEGORIES)];
@@ -90,7 +90,6 @@ const customStyles = {
         ...provided,
         padding: "0.25rem 0",
     }),
-
     option: (provided, state) => ({
         // 드롭다운 옵션 항목 스타일
         ...provided,
@@ -101,7 +100,6 @@ const customStyles = {
             color: "#374151",
         },
     }),
-
     placeholder: (provided) => ({
         // 플레이스홀더 텍스트 스타일
         ...provided,
@@ -151,6 +149,32 @@ function ClosetFilter({ onFilterChange }) {
         onFilterChange(filterName, values);
     };
 
+    // 모든 필터 초기화 함수
+    const resetAllFilters = () => {
+        setSelectedCategories([]);
+        setSelectedTypes([]);
+        setSelectedPatterns([]);
+        setSelectedTones([]);
+        // 상위 부모 컴포넌트에 filters 상태값 모두 빈배열로 초기화
+        onFilterChange("category", []);
+        onFilterChange("type", []);
+        onFilterChange("pattern", []);
+        onFilterChange("tone", []);
+    };
+
+    // 모든 필터 전체 선택 함수
+    const selectAllFilters = () => {
+        setSelectedCategories(categorySelectOptions);
+        setSelectedTypes(typeSelectOptions);
+        setSelectedPatterns(patternSelectOptions);
+        setSelectedTones(toneSelectOptions);
+        // 상위 부모 컴포넌트에 속성별로 배열 안에 모든 값 전달
+        onFilterChange("category", categoryOptions);
+        onFilterChange("type", typeOptions);
+        onFilterChange("pattern", patternOptions);
+        onFilterChange("tone", toneOptions);
+    };
+
     const filtersConfig = [
         { name: "category", label: "전체", options: categorySelectOptions, selectedValue: selectedCategories, setter: setSelectedCategories },
         { name: "type", label: "카테고리", options: typeSelectOptions, selectedValue: selectedTypes, setter: setSelectedTypes },
@@ -183,6 +207,29 @@ function ClosetFilter({ onFilterChange }) {
                     />
                 </div>
             ))}
+
+            {/* 전체선택, 초기화 그룹 */}
+            <div className='flex items-center gap-2'>
+                {/* 전체선택 버튼 */}
+                <button
+                    onClick={selectAllFilters}
+                    className='flex items-center justify-center text-xs text-gray-700 border border-gray-200 rounded-md px-3 py-1.5 bg-white hover:bg-gray-50 transition-colors cursor-pointer'
+                    style={{ minHeight: "30px", fontSize: "0.75rem" }}
+                >
+                    <PlusIcon className='h-3 w-3 mr-1' />
+                    전체선택
+                </button>
+
+                {/* 초기화 버튼 */}
+                <button
+                    onClick={resetAllFilters}
+                    className='flex items-center justify-center text-xs text-gray-700 border border-gray-200 rounded-md px-3 py-1.5 bg-white hover:bg-gray-50 transition-colors cursor-pointer'
+                    style={{ minHeight: "30px", fontSize: "0.75rem" }}
+                >
+                    <ArrowPathIcon className='h-3 w-3 mr-1' />
+                    초기화
+                </button>
+            </div>
         </div>
     );
 }

@@ -30,6 +30,30 @@ const BodyImageUploader = forwardRef(({ uploadedImage, onImageUpload, onImageRem
         }
     };
 
+    const handleDrop = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (uploadedImage || isAnalyzing) return;
+
+        if (!uploadedImage && !isAnalyzing && e.dataTransfer.files && e.dataTransfer.files[0]) {
+            const file = e.dataTransfer.files[0];
+
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                alert('이미지 파일만 업로드할 수 있습니다.');
+                return;
+            }
+
+            // 이미 있는 URL이 있으면 해제 (handleFileChange와 동일하게 처리)
+            if (uploadedImage?.preview) {
+                URL.revokeObjectURL(uploadedImage.preview);
+            }
+            const previewUrl = URL.createObjectURL(file);
+            onImageUpload(file, previewUrl);
+            // AI 분석 시 isAnalyzing을 부모 컴포넌트에서 true로 설정
+        }
+    };
     return (
         <div className="flex items-center justify-center w-full relative">
             <label
@@ -37,7 +61,7 @@ const BodyImageUploader = forwardRef(({ uploadedImage, onImageUpload, onImageRem
                 className={`flex flex-col items-center justify-center w-48 h-54 border-2 border-gray-300 border-dashed rounded-lg bg-white
                     ${uploadedImage ? "" : "hover:bg-gray-100"}`}
                 onDragOver={uploadedImage ? undefined : (e) => e.preventDefault()}
-                onDrop={uploadedImage ? undefined : (e) => e.preventDefault()}
+                onDrop={uploadedImage ? undefined : handleDrop}
             >
                 {uploadedImage ? (
                     <div className='w-full h-full relative'>

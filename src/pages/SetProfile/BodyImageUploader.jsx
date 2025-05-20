@@ -68,8 +68,8 @@ const BodyImageUploader = forwardRef(({ uploadedImage, onImageUpload, onImageRem
                         <img
                             src={uploadedImage.preview}
                             alt='미리보기'
-                            className='w-full h-full object-cover rounded-md'
-                            style={{ objectFit: "cover", objectPosition: "center" }}
+                            className='w-full h-full object-contain rounded-md'
+                            style={{ objectFit: "contain", objectPosition: "center" }}
                         />
                         {/* X 버튼을 label 내부에 두고 preventDefault/stopPropagation 적용 */}
                         <button

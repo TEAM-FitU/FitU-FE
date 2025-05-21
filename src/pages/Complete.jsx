@@ -22,7 +22,7 @@ function Complete() {
                 {/* TODO 상황 입력 페이지로 이동 */}
                 <Link
                     to="/"
-                    className="shadow-md cursor-pointer shadow px-10 py-2 bg-black text-base text-white font-bold rounded border-2 border-black mt-2 text-center"
+                    className="shadow cursor-pointer px-10 py-2 bg-black text-base text-white font-bold rounded border-2 border-black mt-2 text-center"
                 >
                     상황 입력하고 코디 추천 받기
                 </Link>

@@ -8,11 +8,11 @@ function Header({ fixed }) {
     return (
         <>
             <nav className={`shadow w-full bg-white h-[50px] ${fixed ? 'fixed top-0 left-0 z-20' : ''}`}>
-                <div className="h-[50px] max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-3 md:px-6">
+                <div className="h-[50px] w-full flex flex-wrap items-center justify-between px-3">
                     <Link to="/" className="px-2 flex items-center space-x-3">
                         <img src={LOGO} className="h-10 md:h-9" alt="FitU Logo" />
                     </Link>
-                    <div className="flex md:order-2 space-x-3 md:space-x-0">
+                    <div className="flex md:order-2 space-x-3 md:space-x-2">
                         <Link
                             to="/my-profile"
                             className="hidden md:flex mr-[10px] text-white bg-black border border-transparent hover:bg-white hover:text-black hover:border-black transition-colors duration-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 text-center"

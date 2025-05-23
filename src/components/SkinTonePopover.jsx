@@ -18,6 +18,7 @@ const SkinTonePopover = () => {
                 setOpen(false);
             }
         };
+
         document.addEventListener("mousedown", handleClick);
 
         return () => document.removeEventListener("mousedown", handleClick);
@@ -38,21 +39,21 @@ const SkinTonePopover = () => {
             <div
                 ref={popoverRef}
                 className={`
-                    absolute z-10 inline-block text-xs text-gray-500 bg-white border border-gray-200 rounded-lg shadow-xs w-55
-                    transition-all duration-500 sm:w-70
+                    absolute z-10 inline-block bg-white border border-gray-200 rounded-lg shadow-xs
+                    transition-all duration-500 
                     ${open ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}
                     left-1/2 -translate-x-2/3 bottom-full mb-3
-                    sm:left-full sm:bottom-1/2 sm:ml-2 sm:mb-0 sm:-translate-x-0 sm:-translate-y-[5%]
+                    sm:w-[300px] sm:left-[200px] sm:bottom-auto sm:mb-0 sm:-translate-x-1/2
                 `}
                 style={{ minWidth: "16rem" }}
             >
-                <div className="p-3 space-y-2">
-                    <h3 className="font-semibold text-gray-900">웜톤</h3>
-                    <p>피부에 노란빛이 도는 따뜻한 느낌의 톤</p>
-                    <h3 className="font-semibold text-gray-900">쿨톤</h3>
-                    <p>피부에 푸른빛이 도는 차가운 느낌의 톤</p>
-                    <h3 className="font-semibold text-gray-900">뉴트럴톤</h3>
-                    <p>웜톤과 쿨톤의 특징이 모두 섞여 있거나,<br/>어느 한 쪽으로도 치우치지 않은 중립적인 피부톤</p>
+                <div className="p-3 space-y-2 font-semibold text-[1rem]">
+                    <p className="font-semibold">웜톤</p>
+                    <p className="text-[14px] text-gray-500">피부에 노란빛이 도는 따뜻한 느낌의 톤</p>
+                    <p className="font-semibold">쿨톤</p>
+                    <p className="text-[14px] text-gray-500">피부에 푸른빛이 도는 차가운 느낌의 톤</p>
+                    <p className="font-semibold">뉴트럴톤</p>
+                    <p className="text-[14px] text-gray-500">웜톤과 쿨톤의 특징이 모두 섞여 있거나,<br />어느 한 쪽으로도 치우치지 않은 중립적인 피부톤</p>
                 </div>
             </div>
         </div>

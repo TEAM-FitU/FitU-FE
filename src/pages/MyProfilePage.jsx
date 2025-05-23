@@ -3,14 +3,6 @@ import Header from "../components/Header";
 import ProfileForm from "../components/ProfileForm";
 import BodyImageUploader from "../components/BodyImageUploader";
 
-// TODO 더미 데이터 삭제 
-const dummyData = {
-    age: 25,
-    gender: "FEMALE",
-    height: 165,
-    weight: 55,
-    skinTone: "웜톤",
-};
 
 const MyProfilePage = () => {
     const [uploadedImage, setUploadedImage] = useState(null);
@@ -55,9 +47,6 @@ const MyProfilePage = () => {
     useEffect(() => {
         // TODO 개인 프로필 조회 API 호출 
         // axios.get("/user/profile").then(res => setForm(res.data));
-        setTimeout(() => {
-            setForm(dummyData);
-        }, 500);
     }, []);
 
     const handleSubmit = (e) => {

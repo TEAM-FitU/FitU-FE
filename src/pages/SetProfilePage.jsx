@@ -51,10 +51,11 @@ const SetprofilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <div className="min-h-screen bg-[#F7F7F7]">
       <Header />
       <h1 className="pt-[7.5rem] text-[2rem] font-bold text-center">FitU</h1>
       <ProgressBar activeStep={1} />
+      
       <div className="flex flex-col items-center mt-[3.75rem]">
         <BodyImageUploader
           ref={imageUploaderRef}

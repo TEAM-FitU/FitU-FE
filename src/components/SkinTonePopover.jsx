@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-function SkinTonePopover() {
+const SkinTonePopover = () => {
     const [open, setOpen] = useState(false);
     const buttonRef = useRef(null);
     const popoverRef = useRef(null);

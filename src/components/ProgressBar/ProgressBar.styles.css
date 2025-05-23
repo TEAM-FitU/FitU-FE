@@ -1,8 +1,9 @@
 .progress-steps {
+  height: 80px;
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 0 16px;
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 16px;
 }
 
 .progress-steps__container {
@@ -16,7 +17,7 @@
   content: '';
   position: absolute;
   background: #828282;
-  height: 2px;
+  height: 1px;
   width: 100%;
   top: 50%;
   transform: translateY(-50%);
@@ -27,7 +28,7 @@
   content: '';
   position: absolute;
   background: #000000;
-  height: 2.5px;
+  height: 1px;
   width: 100%;
   top: 50%;
   transition: 0.4s ease;
@@ -45,7 +46,7 @@
   height: 18px;
   border-radius: 50%;
   background-color: #ffffff;
-  border: 2.5px solid #828282;
+  border: 1px solid #828282;
   transition: 0.4s ease;
   display: flex;
   justify-content: center;
@@ -58,7 +59,7 @@
 }
 
 .progress-steps__circle--current {
-  border: 2px solid #000000;
+  border: 1px solid #000000;
   color: #000000;
 }
 

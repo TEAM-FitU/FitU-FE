@@ -1,4 +1,4 @@
-import './progressBar.css'
+import "./ProgressBar.styles.css";
 
 const steps = [
   { label: "프로필 등록", step: 1 },

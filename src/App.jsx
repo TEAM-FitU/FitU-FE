@@ -3,16 +3,13 @@ import "./App.css";
 import SetProfile from "./pages/SetProfilePage";
 import Home from "./pages/HomePage";
 import MyProfile from "./pages/MyProfilePage";
-import Complete from "./pages/CompletePage";
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/complete" element={<Complete />} />
                 <Route path="/set-profile" element={<SetProfile />} />
-                <Route path="/complete" element={<Complete />} />
                 <Route path="/my-profile" element={<MyProfile />} />
             </Routes>
         </BrowserRouter>

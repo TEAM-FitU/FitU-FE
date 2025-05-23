@@ -6,38 +6,40 @@ const skinToneOption = [...Object.values(SKINTONES)];
 const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log(name, value);
         setForm(prev => ({ ...prev, [name]: value }));
-        setErrors(prev => ({ ...prev, [name]: "" }));
     };
 
     return (
-        <form onSubmit={handleSubmit} className="w-[360px] mx-auto">
+        <form onSubmit={handleSubmit} className="w-[350px] mx-auto">
             <div className="space-y-5">
-                <div className="flex items-center">
-                    <label htmlFor="age" className="min-w-[70px] text-[1rem] font-medium text-gray-900">
-                        나이 <span className="text-[1rem] font-bold text-[#828282]">*</span>
+                <div className="flex items-center text-[1rem]">
+                    <label htmlFor="age" className="w-[100px] min-w-[70px] font-medium">
+                        나이 <span className="font-bold text-[#828282]">*</span>
                     </label>
-                    <input
-                        type="number"
-                        name="age"
-                        id="age"
-                        value={form.age}
-                        onChange={handleChange}
-                        min={10}
-                        max={100}
-                        required
-                        className="ml-[3.5rem] h-[43px] w-[70px] bg-white border border-[#828282] text-[1rem] rounded-lg focus:ring-blue-500 focus:border-blue-500 px-2 text-right"
-                    />
-                    <span className="ml-2 text-[1rem]">세</span>
+                    <div className="h-[43px] w-[100px] bg-white border border-[#828282] rounded-lg flex items-center px-3">
+                        <input
+                            type="number"
+
+                            name="age"
+                            id="age"
+                            value={form.age}
+                            onChange={handleChange}
+                            min={10}
+                            max={100}
+                            pattern="[0-9]*"
+                            required
+                            className="h-[43px] w-[60px] text-[1rem] px-2 border-none focus:ring-0 focus:outline-none bg-transparent text-center  appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                        />
+                        <span>세</span>
+                    </div>
                 </div>
 
-                <div className="flex items-center mt-[2.375rem]">
-                    <label className="min-w-[70px] text-[1rem] font-medium text-gray-900">
-                        성별 <span className="text-[1rem] font-bold text-[#828282]">*</span>
+                <div className="flex items-center mt-[2.375rem] text-[1rem]">
+                    <label className="w-[100px] min-w-[70px] font-medium">
+                        성별 <span className="font-bold text-[#828282]">*</span>
                     </label>
-                    <div className="ml-[3.5rem] flex-1 flex gap-8">
-                        <label className="flex items-center">
+                    <div className="flex-1 flex gap-[50px]">
+                        <label className="flex items-center w-[100px]">
                             <input
                                 type="radio"
                                 name="gender"
@@ -47,76 +49,83 @@ const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
                                 className="w-4 h-[43px] border-[#828282] accent-black focus:ring-0 focus:outline-none"
                                 required
                             />
-                            <span className="ml-[0.875rem] text-[1rem]">남성</span>
+                            <span className="ml-[0.875rem]">남성</span>
                         </label>
-                        <label className="flex items-center">
+                        <label className="flex items-center w-[100px]">
                             <input
                                 type="radio"
                                 name="gender"
                                 value="FEMALE"
                                 checked={form.gender === "FEMALE"}
                                 onChange={handleChange}
-                                className="ml-[3rem] w-4 h-[43px] border-[#828282] accent-black focus:ring-0 focus:outline-none"
+                                className="w-4 h-[43px] border-[#828282] accent-black focus:ring-0 focus:outline-none"
                             />
-                            <span className="ml-[0.875rem] text-[1rem]">여성</span>
+                            <span className="ml-[0.875rem]">여성</span>
                         </label>
                     </div>
                 </div>
 
-                <div className="flex items-center mt-[2.375rem]">
-                    <label htmlFor="height" className="min-w-[70px] text-[1rem] font-medium">
-                        신체 정보 <span className="text-[1rem] font-bold text-[#828282]">*</span>
+                <div className="flex items-center mt-[2.375rem] text-[1rem]">
+                    <label htmlFor="height" className="w-[100px] min-w-[70px] font-medium">
+                        신체 정보 <span className="font-bold text-[#828282]">*</span>
                     </label>
-                    <div className="ml-[3.5rem] flex-1 flex items-center">
-                        <input
-                            type="number"
-                            name="height"
-                            id="height"
-                            value={form.height}
-                            onChange={handleChange}
-                            placeholder="키"
-                            min={0}
-                            max={250}
-                            required
-                            className="placeholder:text-[#828282] text-[1rem] text-right w-[4.25rem] h-[43px] bg-white border border-[#828282] rounded-lg focus:ring-blue-500 focus:border-blue-500 px-2"
-                        />
-                        <span className="ml-2 text-[1rem]">cm</span>
-                        <input
-                            type="number"
-                            name="weight"
-                            id="weight"
-                            value={form.weight}
-                            onChange={handleChange}
-                            placeholder="몸무게"
-                            min={3}
-                            max={200}
-                            required
-                            className="placeholder:text-[#828282] text-[1rem] text-right ml-[1.9rem] w-[4.5rem] h-[43px] bg-white border border-[#828282] rounded-lg focus:ring-blue-500 focus:border-blue-500 px-2 "
-                        />
-                        <span className="ml-2 text-[1rem]">kg</span>
+                    <div className="flex-1 flex items-center gap-[50px]">
+
+                        <div className="h-[43px] w-[100px] bg-white border border-[#828282] rounded-lg flex items-center px-3">
+                            <input
+                                type="number"
+                                name="height"
+                                id="height"
+                                value={form.height}
+                                onChange={handleChange}
+                                placeholder="키"
+                                min={0}
+                                max={250}
+                                pattern="[0-9]*"
+                                required
+                                className="h-[43px] w-[60px] px-2 border-none focus:ring-0 focus:outline-none bg-transparent text-center appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                            />
+                            <span>cm</span>
+                        </div>
+
+                        <div className="h-[43px] w-[100px] bg-white border border-[#828282] rounded-lg flex items-center px-3">
+                            <input
+                                type="number"
+                                name="weight"
+                                id="weight"
+                                value={form.weight}
+                                onChange={handleChange}
+                                placeholder="몸무게"
+                                min={3}
+                                max={200}
+                                pattern="[0-9]*"
+                                required
+                                className="h-[43px] w-[60px] px-2 border-none focus:ring-0 focus:outline-none bg-transparent text-center appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                            />
+                            <span>kg</span>
+                        </div>
                     </div>
                 </div>
 
 
-                <div className="flex items-center mt-[2.375rem]">
-                    <label htmlFor="skinTone" className="min-w-[70px] text-[1rem] font-medium">
-                        피부톤 <span className="text-[1rem] font-bold text-[#828282]">*</span>
+                <div className="flex items-center mt-[2.375rem] text-[1rem]">
+                    <label htmlFor="skinTone" className="w-[100px] min-w-[70px] font-medium">
+                        피부톤 <span className="font-bold text-[#828282]">*</span>
                     </label>
-                    <div className="ml-[3.5rem] flex-1 flex items-center">
+                    <div className="flex-1 flex items-center w-[230px]">
                         <select
                             id="skinTone"
                             name="skinTone"
                             value={form.skinTone}
                             onChange={handleChange}
                             required
-                            className="bg-white border border-[#828282] w-[13rem] h-[43px] text-[1rem] rounded-lg focus:ring-blue-500 focus:border-blue-500 px-2"
+                            className="w-[250px] bg-white border border-[#828282] h-[43px] rounded-lg focus:ring-blue-500 focus:border-blue-500 px-2"
                         >
                             <option value="">피부톤을 선택해주세요</option>
                             {skinToneOption.map((tone, idx) => (
                                 <option key={idx} value={tone}>{tone}</option>
                             ))}
                         </select>
-                        {/* TODO 피부톤 설명 추가 */}
                         <SkinTonePopover />
                     </div>
                 </div>

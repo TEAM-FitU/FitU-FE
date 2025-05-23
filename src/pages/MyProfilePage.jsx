@@ -1,7 +1,7 @@
-import Header from '../../components/Header';
 import React, { useState, useRef, useEffect } from "react";
-import ProfileForm from "./ProfileForm";
-import BodyImageUploader from './BodyImageUploader';
+import Header from "../components/Header";
+import ProfileForm from "../components/ProfileForm";
+import BodyImageUploader from "../components/BodyImageUploader";
 
 // TODO 더미 데이터 삭제 
 const dummyData = {
@@ -12,7 +12,7 @@ const dummyData = {
     skinTone: "웜톤",
 };
 
-function MyProfile() {
+const MyProfilePage = () => {
     const [uploadedImage, setUploadedImage] = useState(null);
     const [isAnalyzed, setIsAnalyzed] = useState(false);
     const [isAnalysisInProgress, setIsAnalysisInProgress] = useState(false);
@@ -70,18 +70,18 @@ function MyProfile() {
         <>
             <div className="min-h-screen bg-[#fafafa]">
                 <Header />
-                <p className="text-2xl font-bold mt-10 mb-5 text-center">나의 프로필</p>
-                <div className="flex flex-col items-center pt-5">
+                <h1 className="pt-[7.5rem] text-[2rem] font-bold text-center">내 프로필</h1>
+                <div className="flex flex-col items-center mt-[3.75rem]">
                     <BodyImageUploader
                         ref={imageUploaderRef}
                         uploadedImage={uploadedImage}
                         onImageUpload={handleImageUpload}
                         onImageRemove={handleImageRemove}
                     />
-                    <p className="text-xs text-gray-400 mt-2 text-center">
+                    <p className="text-[12px] text-[#828282] mt-1 text-center">
                         전신 사진을 등록하면<br />추천 코디를 착용한 모습을 볼 수 있어요.
                     </p>
-                    <div className="w-full max-w-xs mt-8">
+                    <div className="mt-[3.75rem]">
                         <ProfileForm
                             form={form}
                             setForm={setForm}
@@ -95,4 +95,4 @@ function MyProfile() {
     );
 }
 
-export default MyProfile;
+export default MyProfilePage;

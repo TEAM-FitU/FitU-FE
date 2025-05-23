@@ -1,34 +1,35 @@
-import Header from '../components/Header';
-import LOGO from '../../public/logo.png';
-import ProgressBar from '../components/ProgressBar/ProgressBar';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import Header from "../components/Header";
+import ProgressBar from "../components/ProgressBar/ProgressBar";
 
-function Complete() {
+const CompletePage = () => {
     return (
-        <>
+        <div className="min-h-screen bg-[#fafafa]">
             <Header />
-            <p className="text-2xl font-bold mt-10 mb-5 text-center">FitU</p>
+            <h1 className="pt-[7.5rem] text-[2rem] font-bold text-center">FitU</h1>
+
             <ProgressBar activeStep={3} />
+
             <div className="flex flex-col items-center">
                 <img
-                    src={LOGO}
+                    src="/logo.png"
                     alt="logo"
-                    className="w-[100px] h-[100px] mt-20"
+                    className="h-[150px] mt-[30px]"
                 />
-                <p className="text-center mb-10">
+                <p className="text-[1.25rem] text-center mb-[100px]">
                     <span className="font-semibold">FitU</span>에 오신 것을 환영합니다! <br />
                     당신만을 위한 스타일, <span className="font-semibold">FitU</span>에서 시작하세요.
                 </p>
                 {/* TODO 상황 입력 페이지로 이동 */}
                 <Link
                     to="/"
-                    className="shadow cursor-pointer px-10 py-2 bg-black text-base text-white font-bold rounded border-2 border-black mt-2 text-center"
+                    className="shadow cursor-pointer h-[43px] px-[1.375rem] py-[11px] bg-black text-[1rem] text-white rounded-lg text-center flex items-center justify-center"
                 >
                     상황 입력하고 코디 추천 받기
                 </Link>
             </div>
-        </>
+        </div>
     );
 }
 
-export default Complete;
+export default CompletePage;

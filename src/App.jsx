@@ -1,18 +1,22 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './App.css';
-import SetProfile from './pages/Profile/SetProfile';
-import Home from './pages/Home';
-import MyProfile from './pages/Profile/MyProfile';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import SetProfile from "./pages/SetProfilePage";
+import Home from "./pages/HomePage";
+import MyProfile from "./pages/MyProfilePage";
+import Complete from "./pages/CompletePage";
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/complete" element={<Complete />} />
                 <Route path="/set-profile" element={<SetProfile />} />
+                <Route path="/complete" element={<Complete />} />
                 <Route path="/my-profile" element={<MyProfile />} />
             </Routes>
         </BrowserRouter>
+
     )
 }
 

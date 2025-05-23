@@ -1,11 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
-import Header from '../../components/Header';
-import ProgressBar from '../../components/ProgressBar/ProgressBar';
-import ProfileForm from './ProfileForm';
-import BodyImageUploader from './BodyImageUploader';
+import React, { useRef, useState, useEffect } from "react";
+import Header from "../components/Header";
+import ProgressBar from "../components/ProgressBar/ProgressBar";
+import ProfileForm from "../components/ProfileForm";
+import BodyImageUploader from "../components/BodyImageUploader";
 
-function Setprofile() {
-
+const SetprofilePage = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [isAnalyzed, setIsAnalyzed] = useState(false);
   const [isAnalysisInProgress, setIsAnalysisInProgress] = useState(false);
@@ -54,19 +53,19 @@ function Setprofile() {
   return (
     <div className="min-h-screen bg-[#fafafa]">
       <Header />
-      <p className="text-2xl font-bold mt-10 mb-5 text-center">FitU</p>
+      <h1 className="pt-[7.5rem] text-[2rem] font-bold text-center">FitU</h1>
       <ProgressBar activeStep={1} />
-      <div className="flex flex-col items-center pt-12">
+      <div className="flex flex-col items-center mt-[3.75rem]">
         <BodyImageUploader
           ref={imageUploaderRef}
           uploadedImage={uploadedImage}
           onImageUpload={handleImageUpload}
           onImageRemove={handleImageRemove}
         />
-        <p className="text-xs text-gray-400 mt-2 text-center">
+        <p className="text-[12px] text-[#828282] mt-1 text-center">
           전신 사진을 등록하면<br />추천 코디를 착용한 모습을 볼 수 있어요.
         </p>
-        <div className="w-full max-w-xs mt-8">
+        <div className="mt-[3.75rem]">
           <ProfileForm
             form={form}
             setForm={setForm}
@@ -79,4 +78,4 @@ function Setprofile() {
   );
 }
 
-export default Setprofile;
+export default SetprofilePage;

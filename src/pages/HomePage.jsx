@@ -1,14 +1,14 @@
-import { Link } from 'react-router-dom';
-import Header from '../components/Header';
-import background from '../assets/main-bg.jpg';
+import { Link } from "react-router-dom";
+import Header from "../components/Header";
+import MAIN_BG from "../assets/main-bg.jpg";
 
-function Home() {
+const HomePage = () => {
   return (
     <div>
-      <Header fixed />
+      <Header/>
       <section className="relative w-full h-screen">
         <img
-          src={background}
+          src={MAIN_BG}
           alt="home"
           className="absolute inset-0 w-full h-full object-cover z-0 brightness-75"
         />
@@ -52,4 +52,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomePage;

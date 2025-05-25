@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ImageUploader from "./ImageUploader";
 import AttributeSelectors from "./AttributeSelectors";
 import Waitlist from "./Waitlist";
@@ -22,6 +22,8 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
     const [isWaitlistExpanded, setIsWaitlistExpanded] = useState(true);
 
     const imageUploaderRef = useRef(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         // 이미지가 업로드되면 AI 분석 시작을 시뮬레이션
@@ -94,6 +96,43 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
             }
             return prevItems.filter((item) => item.id !== itemId);
         });
+    };
+
+    // 의류 카테고리 유효성 검사 추가
+
+    const checkClothingRequirements = () => {
+        // 상의와 하의가 각각 1개 이상 있는지 확인 (원피스는 상의+하의로 간주)
+        const hasTop = waitlistItems.some((item) => item.attributes.category === "상의");
+        const hasBottom = waitlistItems.some((item) => item.attributes.category === "하의");
+        const hasOnePiece = waitlistItems.some((item) => item.attributes.category === "원피스");
+
+        // 원피스가 있거나 (상의 + 하의)가 있으면 유효
+        return {
+            hasTop,
+            hasBottom,
+            hasOnePiece,
+            isValid: hasOnePiece || (hasTop && hasBottom),
+        };
+    };
+
+    const handleNavigation = (path) => {
+        // '이전' 버튼은 유효성 검사 없이 이동
+        if (path === "/set-profile") {
+            navigate(path);
+            return;
+        }
+
+        // '다음' 또는 '추가하기' 버튼은 유효성 검사 후 이동
+        const { hasTop, hasBottom, hasOnePiece, isValid } = checkClothingRequirements();
+
+        if (isValid) {
+            // 백엔드 api 호출 로직 추가
+            navigate(path);
+        } else {
+            const errorMessage = "최소한 원피스 1벌 또는 상의와 하의를 각각 1벌씩 추가해야 합니다.";
+
+            alert(errorMessage);
+        }
     };
 
     // ／／ 추후 주석 해제 예정
@@ -188,27 +227,27 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                 {/* 하단 네비게이션 버튼 - showProgress에 따라 다른 버튼 표시 */}
                 {showProgress ? (
                     <div className={`flex justify-center space-x-4 ${isWaitlistExpanded ? "my-6" : ""}`}>
-                        <Link
-                            to='/set-profile'
+                        <button
+                            onClick={() => handleNavigation("/set-profile")}
                             className='h-[2.8125rem] text-[1rem] px-8 py-2 border border-[#828282] rounded text-xs font-medium text-black cursor-pointer hover:bg-gray-100 focus:outline-none flex items-center justify-center'
                         >
                             이전
-                        </Link>
-                        <Link
-                            to='/completion'
+                        </button>
+                        <button
+                            onClick={() => handleNavigation("/completion")}
                             className='h-[2.8125rem] text-[1rem] px-8 py-2 bg-black hover:bg-gray-800 text-white cursor-pointer rounded text-xs font-medium focus:outline-none flex items-center justify-center'
                         >
                             다음
-                        </Link>
+                        </button>
                     </div>
                 ) : (
                     <div className={`flex justify-center space-x-4 ${isWaitlistExpanded ? "my-6" : ""}`}>
-                        <Link
-                            to='/my-closet'
+                        <button
+                            onClick={() => handleNavigation("/my-closet")}
                             className='h-[2.8125rem] text-[1rem] px-8 py-2 bg-black hover:bg-gray-800 text-white cursor-pointer rounded text-xs font-medium focus:outline-none flex items-center justify-center'
                         >
                             추가하기
-                        </Link>
+                        </button>
                     </div>
                 )}
             </main>

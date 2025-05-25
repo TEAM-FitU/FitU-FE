@@ -1,7 +1,7 @@
 import React from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
-function WaitlistItem({ item, onRemove }) {
+const WaitlistItem = ({ item, onRemove }) => {
     // 속성값들을 배열로 변환 (빈 값 제외)
     const attributeValues = Object.values(item.attributes).filter((value) => value);
     return (
@@ -34,6 +34,6 @@ function WaitlistItem({ item, onRemove }) {
             </div>
         </div>
     );
-}
+};
 
 export default WaitlistItem;

@@ -1,11 +1,11 @@
 import WaitlistItem from "./WaitlistItem";
 
-function Waitlist({ items, onRemoveItem }) {
+const Waitlist = ({ items, onRemoveItem }) => {
     return (
         <div className='w-full h-full'>
             {items.length === 0 ? (
-                <div className='h-full w-full flex items-center justify-center'>
-                    <p className='text-center text-sm text-gray-500'>아직 옷장에 넣을 옷이 없어요.</p>
+                <div className='h-full w-full flex items-center justify-center '>
+                    <p className='text-center text-[1rem] text-[#828282]'>아직 옷장에 넣을 옷이 없어요.</p>
                 </div>
             ) : (
                 <div
@@ -22,6 +22,6 @@ function Waitlist({ items, onRemoveItem }) {
             )}
         </div>
     );
-}
+};
 
 export default Waitlist;

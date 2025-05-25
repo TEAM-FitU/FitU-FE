@@ -135,7 +135,7 @@ const OptionWithCheckbox = (props) => {
         </div>
     );
 };
-function ClosetFilter({ onFilterChange }) {
+const ClosetFilter = ({ onFilterChange }) => {
     // 각 필터의 선택된 값들을 배열로 관리 (isMulti=true)
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedTypes, setSelectedTypes] = useState([]);
@@ -232,6 +232,6 @@ function ClosetFilter({ onFilterChange }) {
             </div>
         </div>
     );
-}
+};
 
 export default ClosetFilter;

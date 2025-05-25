@@ -1,14 +1,22 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Header from "./components/Header.jsx";
 import ClosetRegistrationPage from "./pages/ClosetRegistrationPage/ClosetRegistrationPage.jsx";
 import MyClosetPage from "./pages/MyClosetPage/MyClosePage.jsx";
 
 function App() {
     return (
         <>
-            <Header />
-            {/* <ClosetRegistrationPage /> */}
-            <MyClosetPage />
+            <BrowserRouter>
+                <Routes>
+                    {/* <Route path='/' element={<Home />} /> */}
+                    {/* <Route path='/set-profile' element={<SetProfile />} /> */}
+                    {/* <Route path='/my-profile' element={<MyProfile />} /> */}
+                    <Route path='/my-closet' element={<MyClosetPage />} />
+                    <Route path='/closet-add' element={<ClosetRegistrationPage showProgress={false} title='옷 등록' />} />
+                    <Route path='/closet-registration' element={<ClosetRegistrationPage showProgress={true} title='FitU' />} />
+                    <Route path='/' element={<div>Home Page</div>} />
+                </Routes>
+            </BrowserRouter>
         </>
     );
 }

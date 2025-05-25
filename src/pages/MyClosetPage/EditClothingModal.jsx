@@ -3,7 +3,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline"; // X 아이콘 가져�
 import ImageUploader from "../ClosetRegistrationPage/ImageUploader";
 import AttributeSelectors from "../ClosetRegistrationPage/AttributeSelectors";
 
-function EditClothingModal({ isOpen, onClose, clothingData, onSave }) {
+const EditClothingModal = ({ isOpen, onClose, clothingData, onSave }) => {
     const [uploadedImage, setUploadedImage] = useState(null);
     const [attributes, setAttributes] = useState({
         category: "",
@@ -11,7 +11,7 @@ function EditClothingModal({ isOpen, onClose, clothingData, onSave }) {
         pattern: "",
         tone: "",
     });
-    const [isAnalyzed, setIsAnalyzed] = useState(true); // 수정 시에는 이미 분석된 상태 
+    const [isAnalyzed, setIsAnalyzed] = useState(true); // 수정 시에는 이미 분석된 상태
 
     const imageUploaderRef = useRef(null);
 
@@ -106,11 +106,17 @@ function EditClothingModal({ isOpen, onClose, clothingData, onSave }) {
                     </div>
 
                     {/* 버튼 영역 */}
-                    <div className='flex justify-center space-x-4'>
-                        <button onClick={onClose} className='px-6 py-2.5 border border-gray-300 rounded text-sm font-medium cursor-pointer'>
+                    <div className='flex justify-center space-x-4 '>
+                        <button
+                            onClick={onClose}
+                            className='px-6 py-2.5  border border-[#828282]rounded text-sm font-medium cursor-pointer hover:bg-gray-100'
+                        >
                             취소
                         </button>
-                        <button onClick={handleSave} className='px-6 py-2.5 bg-black text-white rounded text-sm font-medium cursor-pointer'>
+                        <button
+                            onClick={handleSave}
+                            className='px-6 py-2.5 bg-black text-white rounded text-sm font-medium cursor-pointer hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed'
+                        >
                             저장
                         </button>
                     </div>
@@ -118,6 +124,6 @@ function EditClothingModal({ isOpen, onClose, clothingData, onSave }) {
             </div>
         </div>
     );
-}
+};
 
 export default EditClothingModal;

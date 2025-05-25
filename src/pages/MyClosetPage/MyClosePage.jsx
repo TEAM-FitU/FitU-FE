@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import ClosetFilter from "./ClosetFilter";
 import ClosetItemCard from "./ClosetItemCard";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import EditClothingModal from "./EditClothingModal";
+import Header from "../../components/Header";
 
 // 임시 더미 데이터
 const dummyClosetItems = Array.from({ length: 20 }, (_, i) => ({
@@ -11,7 +13,7 @@ const dummyClosetItems = Array.from({ length: 20 }, (_, i) => ({
     tags: i % 2 === 0 ? [`티셔츠`, `기타`, `밝은 계열`] : [`Tag ${i + 1}`, `Tag ${i + 2}`, `Tag ${i + 3}`],
 }));
 
-function MyClosetPage() {
+const MyClosetPage = () => {
     const [closetItems, setClosetItems] = useState(dummyClosetItems);
     const [filters, setFilters] = useState({});
 
@@ -26,11 +28,6 @@ function MyClosetPage() {
         }));
         // 실제로는 이 필터 값으로 closetItems를 필터링하는 로직 필요
         console.log("Selected Filter:", filterName, value);
-    };
-
-    const handleAddItem = () => {
-        console.log("옷 추가하기 버튼 클릭됨");
-        // 옷 추가 페이지로 이동 예정
     };
 
     const handleEditItem = (itemId) => {
@@ -57,10 +54,12 @@ function MyClosetPage() {
     };
 
     return (
-        <div className='min-h-screen bg-[#F7F7F7] py-6 px-4 sm:px-6 lg:px-8'>
+        <div className='min-h-screen bg-[#F7F7F7]'>
+            <Header />
+
             <main className='max-w-6xl mx-auto flex flex-col'>
-                <div className='mb-8 w-full'>
-                    <h1 className='text-3xl font-bold text-center text-black mb-6'>나의 옷장</h1>
+                <div className='mb-4 w-full'>
+                    <h1 className='text-[2rem] font-bold text-center text-black mb-[4.375rem] mt-[7.5rem]'>나의 옷장</h1>
                     {/* 필터와 옷 추가하기 */}
                     <div className='flex flex-col sm:flex-row justify-between items-center sm:space-x-4'>
                         {/* 필터는 왼쪽에 */}
@@ -68,12 +67,12 @@ function MyClosetPage() {
                             <ClosetFilter onFilterChange={handleFilterChange} />
                         </div>
                         {/* 옷 추가하기 버튼은 오른쪽에 */}
-                        <button
-                            onClick={handleAddItem}
-                            className='flex items-center bg-black text-white text-xs font-semibold px-3 py-2 rounded-md hover:bg-gray-800 transition-colors whitespace-nowrap cursor-pointer'
+                        <Link
+                            to='/closet-add'
+                            className='flex items-center bg-black text-white  h-[2.8125rem] text-[1rem] font-semibold px-3 py-2 rounded-md hover:bg-gray-800 transition-colors whitespace-nowrap cursor-pointer'
                         >
                             <PlusIcon className='w-4 h-4 mr-1 fill-white stroke-white' />옷 추가하기
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
@@ -112,6 +111,6 @@ function MyClosetPage() {
             />
         </div>
     );
-}
+};
 
 export default MyClosetPage;

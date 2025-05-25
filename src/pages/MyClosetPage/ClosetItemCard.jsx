@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 
-function ClosetItemCard({ imageUrl, tags = [], onEdit, onDelete }) {
+const ClosetItemCard = ({ imageUrl, tags = [], onEdit, onDelete }) => {
     const [showMenu, setShowMenu] = useState(false);
     const menuRef = useRef(null);
     const buttonRef = useRef(null);
@@ -88,6 +88,6 @@ function ClosetItemCard({ imageUrl, tags = [], onEdit, onDelete }) {
             </div>
         </div>
     );
-}
+};
 
 export default ClosetItemCard;

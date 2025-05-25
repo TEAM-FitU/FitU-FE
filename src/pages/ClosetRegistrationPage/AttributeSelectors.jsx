@@ -20,7 +20,7 @@ const typeSelectOptions = createSelectOptions(typeOptions);
 const patternSelectOptions = createSelectOptions(patternOptions);
 const toneSelectOptions = createSelectOptions(toneOptions);
 
-function AttributeSelectors({ attributes, onAttributeChange, isAnalyzed }) {
+const AttributeSelectors = ({ attributes, onAttributeChange, isAnalyzed }) => {
     // 모든 드롭다운에 동일한 너비, 높이, 패딩, 폰트 크기 적용
     const commonLabelClasses = "text-xs font-medium text-gray-700 whitespace-nowrap pt-2.5 self-start w-16"; // 고정 너비 추가
     const dropdownContainerClasses = "flex-1 w-[160px] relative"; // 드롭다운 컨테이너 상대 위치 설정
@@ -141,7 +141,7 @@ function AttributeSelectors({ attributes, onAttributeChange, isAnalyzed }) {
                         // isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
                     />
                 </div>
-            </div>{" "}
+            </div>
             {/* 상세 종류 그룹 */}
             <div className={groupClasses}>
                 <div className={commonLabelClasses}>{/* 빈 div로 레이블 공간 확보 */}</div>
@@ -164,7 +164,7 @@ function AttributeSelectors({ attributes, onAttributeChange, isAnalyzed }) {
                         // isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
                     />
                 </div>
-            </div>{" "}
+            </div>
             {/* 패턴 그룹 */}
             <div className={groupClasses}>
                 <label htmlFor='pattern' className={commonLabelClasses}>
@@ -189,7 +189,7 @@ function AttributeSelectors({ attributes, onAttributeChange, isAnalyzed }) {
                         // isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
                     />
                 </div>
-            </div>{" "}
+            </div>
             {/* 톤 그룹 */}
             <div className={groupClasses}>
                 <label htmlFor='tone' className={commonLabelClasses}>
@@ -218,6 +218,6 @@ function AttributeSelectors({ attributes, onAttributeChange, isAnalyzed }) {
             </div>
         </div>
     );
-}
+};
 
 export default AttributeSelectors;

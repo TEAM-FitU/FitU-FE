@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import ImageUploader from "./ImageUploader";
 import AttributeSelectors from "./AttributeSelectors";
 import Waitlist from "./Waitlist";
+import Header from "../../components/Header";
+import ProgressBar from "../../components/ProgressBar.jsx/ProgressBar";
 
 const initialAttributes = {
     category: "",
@@ -10,7 +13,7 @@ const initialAttributes = {
     tone: "",
 };
 
-function ClosetRegistrationPage() {
+const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
     const [uploadedImage, setUploadedImage] = useState(null);
     const [attributes, setAttributes] = useState(initialAttributes);
     const [isAnalyzed, setIsAnalyzed] = useState(false);
@@ -53,7 +56,7 @@ function ClosetRegistrationPage() {
             [name]: value,
         }));
     };
-    
+
     const handleAddToWaitlist = async () => {
         if (!uploadedImage) return;
 
@@ -92,22 +95,28 @@ function ClosetRegistrationPage() {
             return prevItems.filter((item) => item.id !== itemId);
         });
     };
-    
+
     // ／／ 추후 주석 해제 예정
     //  const canAddToWaitlist = uploadedImage && !isAnalysisInProgress;
 
     return (
-        <div className='bg-[#F7F7F7] py-4 px-4 sm:px-6 lg:px-8 flex flex-col min-h-screen overflow-x-hidden'>
-            <main className='max-w-4xl mx-auto flex flex-col w-full flex-1'>
-                {/* 헤더 밑부분 영역 */}
-                <div className='mb-3'>
-                    <h1 className='text-2xl font-bold text-center text-black mb-1'>FitU</h1>
-                    <div className='h-7 flex items-center justify-center text-gray-400 text-xs'>[ 의상 등록 프로그레스 바 영역 ]</div>
+        <div className='bg-[#F7F7F7] flex flex-col min-h-screen overflow-x-hidden'>
+            <Header />
+
+            <main className='mb-max-w-4xl mx-auto flex flex-col w-full flex-1 mt-[7.5rem]'>
+                {/* 헤더 밑부분 영역 - props에 따라 조건부 렌더링 */}
+                <div>
+                    <h1 className={`text-[2rem] font-bold text-center text-black ${showProgress ? "mb-0" : "mb-[4.375rem]"}`}>{title}</h1>
+                    {showProgress && (
+                        <div className='h-7 flex items-center justify-center text-gray-400 text-xs mt-[3rem] mb-[4.375rem]'>
+                            <ProgressBar activeStep={2} />
+                        </div>
+                    )}
                 </div>
                 {/* 옷 등록 영역 - 단일 컨테이너로 구성 */}
-                <div className='bg-white shadow-lg rounded-xl pt-8'>
+                <div className='bg-white shadow-lg rounded-xl pt-8 w-1/2 mx-auto'>
                     {/* 내용 영역: 이미지 업로더와 속성 선택기를 포함한 그리드 */}
-                    <div className='grid grid-cols-1 md:grid-cols-2 items-stretch'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-20 items-stretch'>
                         {/* 왼쪽: 이미지 업로더 */}
                         <div className='flex justify-center md:justify-end mb-4 md:mb-0 pr-2 md:pr-8'>
                             <div className='max-w-xs'>
@@ -121,7 +130,7 @@ function ClosetRegistrationPage() {
                         </div>
 
                         {/* 오른쪽: 속성 선택기 */}
-                        <div className='flex flex-col pl-2 md:pl-8'>
+                        <div className='flex flex-col pl-2 md:pl-8 justify-center'>
                             <div>
                                 <AttributeSelectors attributes={attributes} onAttributeChange={handleAttributeChange} isAnalyzed={isAnalyzed} />
                             </div>
@@ -134,7 +143,7 @@ function ClosetRegistrationPage() {
                             type='button'
                             onClick={handleAddToWaitlist}
                             // disabled={!canAddToWaitlist}
-                            className='w-[200px] h-[36px] bg-black hover:bg-gray-800 mb-8 mt-8 text-white font-semibold py-2 px-4 rounded-md text-xs
+                            className='w-[200px] h-[2.8125rem] text-[1rem] bg-black hover:bg-gray-800 mb-8 mt-8 text-white font-semibold py-2 px-4 rounded-md  
                             disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed cursor-pointer
                             transition-colors duration-150 ease-in-out'
                         >
@@ -166,9 +175,9 @@ function ClosetRegistrationPage() {
                 </div>
                 {/* 대기 목록 표시 영역 - 토글 상태에 따라 표시/숨김 */}
                 <div
-                    className={`bg-white shadow-lg rounded-xl flex items-start justify-center overflow-hidden transition-all duration-500 ease-in-out ${
+                    className={`w-1/2 mx-auto bg-white shadow-lg rounded-xl flex items-start justify-center overflow-hidden transition-all duration-500 ease-in-out ${
                         isWaitlistExpanded
-                            ? `opacity-100 mb-4 pt-8 pb-8 ${waitlistItems.length > 8 ? "max-h-[420px]" : ""}`
+                            ? `opacity-100 pt-8 pb-8 ${waitlistItems.length > 8 ? "max-h-[420px]" : ""}`
                             : "max-h-0 opacity-0 mb-0 pt-0 pb-0 border-t-0 border-b-0"
                     }`}
                 >
@@ -176,24 +185,35 @@ function ClosetRegistrationPage() {
                         <Waitlist items={waitlistItems} onRemoveItem={handleRemoveFromWaitlist} />
                     </div>
                 </div>
-                {/* 하단 네비게이션 버튼 - 가운데 정렬 */}
-                <div className='flex justify-center space-x-4 py-2'>
-                    <button
-                        type='button'
-                        className='px-8 py-2 border border-black rounded text-xs font-medium text-black cursor-pointer hover:bg-gray-100 focus:outline-none'
-                    >
-                        이전
-                    </button>
-                    <button
-                        type='button'
-                        className='px-8 py-2 bg-black hover:bg-gray-800 text-white cursor-pointer rounded text-xs font-medium focus:outline-none'
-                    >
-                        다음
-                    </button>
-                </div>
+                {/* 하단 네비게이션 버튼 - showProgress에 따라 다른 버튼 표시 */}
+                {showProgress ? (
+                    <div className='flex justify-center space-x-4 my-10'>
+                        <Link
+                            to='/set-profile'
+                            className='h-[2.8125rem] text-[1rem] px-8 py-2 border border-[#828282] rounded text-xs font-medium text-black cursor-pointer hover:bg-gray-100 focus:outline-none flex items-center justify-center'
+                        >
+                            이전
+                        </Link>
+                        <Link
+                            to='/completion'
+                            className='h-[2.8125rem] text-[1rem] px-8 py-2 bg-black hover:bg-gray-800 text-white cursor-pointer rounded text-xs font-medium focus:outline-none flex items-center justify-center'
+                        >
+                            다음
+                        </Link>
+                    </div>
+                ) : (
+                    <div className={`flex justify-center space-x-4 ${isWaitlistExpanded ? "my-6" : ""}`}>
+                        <Link
+                            to='/my-closet'
+                            className='h-[2.8125rem] text-[1rem] px-8 py-2 bg-black hover:bg-gray-800 text-white cursor-pointer rounded text-xs font-medium focus:outline-none flex items-center justify-center'
+                        >
+                            추가하기
+                        </Link>
+                    </div>
+                )}
             </main>
         </div>
     );
-}
+};
 
 export default ClosetRegistrationPage;

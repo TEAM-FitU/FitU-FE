@@ -154,10 +154,10 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                 </div>
                 {/* 대기 목록 제목 */}
                 <div
-                    className='flex items-center justify-center my-4 cursor-pointer group hover:bg-gray-100 py-2 px-4 rounded-lg transition-all duration-200'
+                    className='flex items-center justify-center my-6 cursor-pointer group py-2 px-4 rounded-lg transition-all duration-200'
                     onClick={() => setIsWaitlistExpanded(!isWaitlistExpanded)}
                 >
-                    <h2 className='text-base font-semibold text-gray-700 mr-2 group-hover:text-black transition-colors duration-200'>
+                    <h2 className='text-base font-semibold text-gray-700 mr-2 hover:bg-gray-100  group-hover:text-black transition-colors duration-200'>
                         대기 목록 ({waitlistItems.length})
                     </h2>
                     {/* 화살표 SVG 아이콘 - 토글 상태에 따라 회전 */}
@@ -187,7 +187,7 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                 </div>
                 {/* 하단 네비게이션 버튼 - showProgress에 따라 다른 버튼 표시 */}
                 {showProgress ? (
-                    <div className={`flex justify-center space-x-4 ${isWaitlistExpanded ? "my-10" : ""}`}>
+                    <div className={`flex justify-center space-x-4 ${isWaitlistExpanded ? "my-6" : ""}`}>
                         <Link
                             to='/set-profile'
                             className='h-[2.8125rem] text-[1rem] px-8 py-2 border border-[#828282] rounded text-xs font-medium text-black cursor-pointer hover:bg-gray-100 focus:outline-none flex items-center justify-center'

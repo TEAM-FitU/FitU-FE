@@ -108,7 +108,7 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                 <div>
                     <h1 className={`text-[2rem] font-bold text-center text-black ${showProgress ? "mb-0" : "mb-[4.375rem]"}`}>{title}</h1>
                     {showProgress && (
-                        <div className='h-7 flex items-center justify-center text-gray-400 text-xs mt-[3rem] mb-[4.375rem]'>
+                        <div className='h-7 flex items-center justify-center text-gray-400 text-xs mt-[3.125rem] mb-[4.375rem]'>
                             <ProgressBar activeStep={2} />
                         </div>
                     )}

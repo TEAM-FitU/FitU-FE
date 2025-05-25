@@ -187,7 +187,7 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                 </div>
                 {/* 하단 네비게이션 버튼 - showProgress에 따라 다른 버튼 표시 */}
                 {showProgress ? (
-                    <div className='flex justify-center space-x-4 my-10'>
+                    <div className={`flex justify-center space-x-4 ${isWaitlistExpanded ? "my-10" : ""}`}>
                         <Link
                             to='/set-profile'
                             className='h-[2.8125rem] text-[1rem] px-8 py-2 border border-[#828282] rounded text-xs font-medium text-black cursor-pointer hover:bg-gray-100 focus:outline-none flex items-center justify-center'

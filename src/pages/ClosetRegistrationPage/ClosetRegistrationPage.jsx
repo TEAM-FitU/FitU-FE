@@ -4,7 +4,8 @@ import ImageUploader from "./ImageUploader";
 import AttributeSelectors from "./AttributeSelectors";
 import Waitlist from "./Waitlist";
 import Header from "../../components/Header";
-import ProgressBar from "../../components/ProgressBar.jsx/ProgressBar";
+import useUserStore from "../../store/userStore";
+import ProgressBar from "../../components/ProgressBar/ProgressBar";
 
 const initialAttributes = {
     category: "",
@@ -12,6 +13,8 @@ const initialAttributes = {
     pattern: "",
     tone: "",
 };
+
+const requiredFields = ["age", "gender", "height", "weight", "skinTone"];
 
 const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
     const [uploadedImage, setUploadedImage] = useState(null);
@@ -23,7 +26,22 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
 
     const imageUploaderRef = useRef(null);
 
+    const { profile } = useUserStore();
+
     const navigate = useNavigate();
+
+    // 프로필 정보 확인, 추후 백엔드로 같이 요청 및 최종 저장 후 resetProfile로 프로필 초기화 예정
+    useEffect(() => {
+        console.log("전달받은 사용자 프로필 정보:", profile);
+
+        // 프로필 정보가 없으면 프로필 페이지로 리다이렉트
+        const hasAllRequiredFields = requiredFields.every((field) => profile[field]);
+
+        if (!hasAllRequiredFields) {
+            alert("프로필 정보가 누락되었습니다. 프로필 페이지로 이동합니다.");
+            navigate("/set-profile");
+        }
+    }, []);
 
     useEffect(() => {
         // 이미지가 업로드되면 AI 분석 시작을 시뮬레이션
@@ -147,13 +165,13 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                 <div>
                     <h1 className={`text-[2rem] font-bold text-center text-black ${showProgress ? "mb-0" : "mb-[4.375rem]"}`}>{title}</h1>
                     {showProgress && (
-                        <div className='h-7 flex items-center justify-center text-gray-400 text-xs mt-[3.125rem] mb-[4.375rem]'>
+                         
                             <ProgressBar activeStep={2} />
-                        </div>
+              
                     )}
                 </div>
                 {/* 옷 등록 영역 - 단일 컨테이너로 구성 */}
-                <div className='bg-white shadow-lg rounded-xl pt-8 w-1/2 mx-auto'>
+                <div className='bg-white shadow-lg rounded-xl pt-8 w-1/2 mx-auto mt-[3.75rem]'>
                     {/* 내용 영역: 이미지 업로더와 속성 선택기를 포함한 그리드 */}
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-20 items-stretch'>
                         {/* 왼쪽: 이미지 업로더 */}

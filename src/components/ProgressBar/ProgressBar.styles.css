@@ -1,15 +1,13 @@
 .progress-steps {
-  height: 80px;
   width: 100%;
   max-width: 700px;
-  margin: 20px auto;
-  padding: 16px;
+  margin: 50px auto 0;
+  padding: 0 16px 10px;
 }
 
 .progress-steps__container {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+  justify-content: space-between; 
   position: relative;
 }
 

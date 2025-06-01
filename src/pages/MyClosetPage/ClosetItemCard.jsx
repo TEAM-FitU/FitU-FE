@@ -6,8 +6,9 @@ const ClosetItemCard = ({ imageUrl, tags = [], onEdit, onDelete }) => {
     const menuRef = useRef(null);
     const buttonRef = useRef(null);
 
-    // 더미 데이터 또는 실제 태그가 없을 경우 기본 태그 표시
-    const displayTags = tags.length > 0 ? tags.slice(0, 3) : ["Tag1", "Tag2", "Tag3"];
+    const displayTags = tags.slice(0, 4);
+
+    console.log("displayTags:", displayTags);
 
     // 외부 클릭 감지를 위한 이벤트 리스너
     useEffect(() => {

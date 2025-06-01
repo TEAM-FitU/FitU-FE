@@ -21,7 +21,7 @@ const EditClothingModal = ({ isOpen, onClose, clothingData, onSave }) => {
             // 기존 이미지 설정
             setUploadedImage({
                 file: null, // 파일 객체는 없지만
-                preview: clothingData.imageUrl, // 미리보기 URL은 있음
+                preview: clothingData.imageUrl, // 초기 모달에 접근 시 미리보기 URL은 있음
             });
 
             // 기존 속성 설정
@@ -46,6 +46,8 @@ const EditClothingModal = ({ isOpen, onClose, clothingData, onSave }) => {
     };
 
     const handleAttributeChange = (name, value) => {
+        console.log("uploadedImage:", uploadedImage);
+
         setAttributes((prev) => ({
             ...prev,
             [name]: value,
@@ -53,25 +55,24 @@ const EditClothingModal = ({ isOpen, onClose, clothingData, onSave }) => {
     };
 
     const handleSave = () => {
-        // 수정시에는 이미지 데이터가 무조건 필수, 이미지가 없다면 이미지를 업로드 해주세요 알림 고려
+        // 수정시에도 모든 데이터가 필수
         onSave({
             id: clothingData.id,
-            imageUrl: uploadedImage?.preview || clothingData.imageUrl,
+            prevImage: uploadedImage?.preview || null,
+            newImage: uploadedImage?.file || null,
             tags: [
                 { type: "category", value: attributes.category },
                 { type: "type", value: attributes.type },
                 { type: "pattern", value: attributes.pattern },
                 { type: "tone", value: attributes.tone },
-            ].filter((tag) => tag.value), // 빈 값 필터링
+            ].filter((tag) => tag.value), // 빈 값 필터링은 일단 보류
         });
-
-        onClose();
     };
 
     if (!isOpen) return null;
 
     return (
-        <div className='fixed inset-0 bg-gray-500/75 transition-opacity z-50 flex items-center justify-center p-4 backdrop-blur-[2px]'>
+        <div className='fixed inset-0 bg-gray-500/75 transition-opacity z-40 flex items-center justify-center p-4 backdrop-blur-[2px]'>
             <div className='bg-white rounded-xl shadow-xl w-full max-w-3xl h-[500px] overflow-y-auto flex flex-col'>
                 <div className='p-6 flex flex-col flex-grow'>
                     {/* 헤더 영역 */}

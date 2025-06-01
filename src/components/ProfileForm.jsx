@@ -2,12 +2,25 @@ import { Link } from "react-router-dom";
 import { SKINTONES } from "../constants/skintones";
 import SkinTonePopover from "./SkinTonePopover";
 
-const skinToneOption = [...Object.values(SKINTONES)];
+// 키-값 쌍으로 옵션 배열 변환 함수
+const createSelectOptions = (optionsObj) =>
+    Object.entries(optionsObj).map(([key, label]) => ({
+        value: key, // 백엔드로 보낼 영문 키(WARM, COOL, NEUTRAL)
+        label: label, // 화면에 표시할 한글 값(웜톤, 쿨톤, 뉴트럴톤)
+    }));
+
+const skinToneOptions = createSelectOptions(SKINTONES);
 
 const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
+    };
+
+    // 피부톤 선택 변경 시 처리 함수
+    const handleSkinToneChange = (e) => {
+        const { value } = e.target;
+        setForm((prev) => ({ ...prev, skinTone: value }));
     };
 
     return (
@@ -115,14 +128,14 @@ const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
                             id='skinTone'
                             name='skinTone'
                             value={form.skinTone}
-                            onChange={handleChange}
+                            onChange={handleSkinToneChange}
                             required
                             className='w-[250px] bg-white border border-[#828282] h-[43px] rounded-lg focus:ring-blue-500 focus:border-blue-500 px-2'
                         >
                             <option value=''>피부톤을 선택해주세요</option>
-                            {skinToneOption.map((tone, idx) => (
-                                <option key={idx} value={tone}>
-                                    {tone}
+                            {skinToneOptions.map(({ value, label }) => (
+                                <option key={value} value={value}>
+                                    {label}
                                 </option>
                             ))}
                         </select>

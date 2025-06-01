@@ -2,23 +2,17 @@ import React from "react";
 import Select from "react-select";
 import { CLOTHING_CATEGORIES, CLOTHING_TYPES, PATTERN_TYPES, COLOR_TONES } from "../../constants/clothingAttributes";
 
-// 옵션 배열
-const categoryOptions = [...Object.values(CLOTHING_CATEGORIES)];
-const typeOptions = [...Object.values(CLOTHING_TYPES)];
-const patternOptions = [...Object.values(PATTERN_TYPES)];
-const toneOptions = [...Object.values(COLOR_TONES)];
-
-// React-Select 용 옵션 배열 변환 함수
-const createSelectOptions = (options) =>
-    options.map((option) => ({
-        value: option,
-        label: option,
+const createSelectOptions = (optionsObj) =>
+    Object.entries(optionsObj).map(([key, label]) => ({
+        value: key, // 백엔드로 보낼 영문 키(TOP, BOTTOM 등)
+        label: label, // 화면에 표시할 한글 값(상의, 하의 등)
     }));
 
-const categorySelectOptions = createSelectOptions(categoryOptions);
-const typeSelectOptions = createSelectOptions(typeOptions);
-const patternSelectOptions = createSelectOptions(patternOptions);
-const toneSelectOptions = createSelectOptions(toneOptions);
+// 객체 자체를 전달
+const categorySelectOptions = createSelectOptions(CLOTHING_CATEGORIES);
+const typeSelectOptions = createSelectOptions(CLOTHING_TYPES);
+const patternSelectOptions = createSelectOptions(PATTERN_TYPES);
+const toneSelectOptions = createSelectOptions(COLOR_TONES);
 
 const AttributeSelectors = ({ attributes, onAttributeChange, isAnalyzed }) => {
     // 모든 드롭다운에 동일한 너비, 높이, 패딩, 폰트 크기 적용

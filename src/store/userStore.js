@@ -8,7 +8,7 @@ const useUserStore = create((set) => ({
         height: "",
         weight: "",
         skinTone: "",
-        bodyImage: null,
+        userBodyImage: null,
     },
 
     // 프로필 정보 업데이트
@@ -20,7 +20,7 @@ const useUserStore = create((set) => ({
     // 전신 사진 업데이트
     setBodyImage: (imageData) =>
         set((state) => ({
-            profile: { ...state.profile, bodyImage: imageData },
+            profile: { ...state.profile, userBodyImage: imageData },
         })),
 
     // 프로필 초기화 (완료 후 정리)
@@ -32,7 +32,7 @@ const useUserStore = create((set) => ({
                 height: "",
                 weight: "",
                 skinTone: "",
-                bodyImage: null,
+                userBodyImage: null,
             },
         }),
 }));

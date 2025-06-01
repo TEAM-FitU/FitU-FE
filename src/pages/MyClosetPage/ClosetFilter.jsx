@@ -3,20 +3,17 @@ import Select from "react-select";
 import { CLOTHING_CATEGORIES, CLOTHING_TYPES, PATTERN_TYPES, COLOR_TONES } from "../../constants/clothingAttributes"; // 경로 확인 필요
 import { CheckIcon, ChevronDownIcon, ArrowPathIcon, PlusIcon } from "@heroicons/react/20/solid";
 
-// 옵션 배열
-const categoryOptions = [...Object.values(CLOTHING_CATEGORIES)];
-const typeOptions = [...Object.values(CLOTHING_TYPES)];
-const patternOptions = [...Object.values(PATTERN_TYPES)];
-const toneOptions = [...Object.values(COLOR_TONES)];
+const createSelectOptions = (optionsObj) =>
+    Object.entries(optionsObj).map(([key, label]) => ({
+        value: key, // 백엔드로 보낼 영문 키(TOP, BOTTOM 등)
+        label: label, // 화면에 표시할 한글 값(상의, 하의 등)
+    }));
 
-// React-Select 용 옵션 배열 변환 함수
-const createSelectOptions = (options) => options.map((option) => ({ value: option, label: option }));
-
-// 각 필터에 사용할 옵션
-const categorySelectOptions = createSelectOptions(categoryOptions);
-const typeSelectOptions = createSelectOptions(typeOptions);
-const patternSelectOptions = createSelectOptions(patternOptions);
-const toneSelectOptions = createSelectOptions(toneOptions);
+// 객체 자체를 전달
+const categorySelectOptions = createSelectOptions(CLOTHING_CATEGORIES);
+const typeSelectOptions = createSelectOptions(CLOTHING_TYPES);
+const patternSelectOptions = createSelectOptions(PATTERN_TYPES);
+const toneSelectOptions = createSelectOptions(COLOR_TONES);
 
 // React-Select 커스텀 스타일
 const customStyles = {
@@ -147,32 +144,47 @@ const ClosetFilter = ({ onFilterChange }) => {
         setter(selectedOptions || []); // selectedOptions가 null일 수 있으므로 빈 배열로 처리
         const values = selectedOptions && selectedOptions.length > 0 ? selectedOptions.map((option) => option.value) : []; // 빈 배열은 "전체" 또는 필터링 없음을 의미할 수 있음
         onFilterChange(filterName, values);
-    };
-
-    // 모든 필터 초기화 함수
+    };    // 모든 필터 초기화 함수
     const resetAllFilters = () => {
         setSelectedCategories([]);
         setSelectedTypes([]);
         setSelectedPatterns([]);
         setSelectedTones([]);
-        // 상위 부모 컴포넌트에 filters 상태값 모두 빈배열로 초기화
-        onFilterChange("category", []);
-        onFilterChange("type", []);
-        onFilterChange("pattern", []);
-        onFilterChange("tone", []);
-    };
-
-    // 모든 필터 전체 선택 함수
+        
+        // 모든 필터를 객체로 한 번에 전달
+        const allFiltersReset = {
+            category: [],
+            type: [],
+            pattern: [],
+            tone: []
+        };
+        
+        // 한 번에 모든 필터 초기화
+        onFilterChange("allFilters", allFiltersReset);
+    };    // 모든 필터 전체 선택 함수
     const selectAllFilters = () => {
+        // 선택 상태 업데이트 
         setSelectedCategories(categorySelectOptions);
         setSelectedTypes(typeSelectOptions);
         setSelectedPatterns(patternSelectOptions);
         setSelectedTones(toneSelectOptions);
-        // 상위 부모 컴포넌트에 속성별로 배열 안에 모든 값 전달
-        onFilterChange("category", categoryOptions);
-        onFilterChange("type", typeOptions);
-        onFilterChange("pattern", patternOptions);
-        onFilterChange("tone", toneOptions);
+        
+        // 모든 필터의 value 값을 추출
+        const allCategoryValues = categorySelectOptions.map(option => option.value);
+        const allTypeValues = typeSelectOptions.map(option => option.value);
+        const allPatternValues = patternSelectOptions.map(option => option.value);
+        const allToneValues = toneSelectOptions.map(option => option.value);
+        
+        // 모든 필터 값을 객체로 한 번에 전달
+        const allFiltersSelected = {
+            category: allCategoryValues,
+            type: allTypeValues,
+            pattern: allPatternValues,
+            tone: allToneValues
+        };
+        
+        // 한 번에 모든 필터 전달
+        onFilterChange("allFilters", allFiltersSelected);
     };
 
     const filtersConfig = [

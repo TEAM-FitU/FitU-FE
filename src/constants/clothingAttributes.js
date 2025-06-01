@@ -15,15 +15,23 @@ export const CLOTHING_TYPES = {
     SWEATER: "스웨터",
     TSHIRT: "티셔츠",
     VEST: "베스트",
+    ACTIVEWEAR: "활동복",
+    JEANS: "청바지",
+    PANTS: "바지",
+    SHORTS: "반바지",
+    SKIRT: "치마",
+    SLACKS: "슬랙스",
+    DRESS: "드레스",
+    JUMPSUIT: "점프수트",
 };
 
 export const PATTERN_TYPES = {
     ANIMAL: "동물",
-    ART: "전통/예술",
+    ARTIFACT: "아티팩트",
     CHECK: "체크",
     DOT: "도트",
     ETC: "기타",
-    NATURE: "자연",
+    ETCNATURE: "자연",
     GEOMETRIC: "기하학",
     PLANT: "식물",
     STRIPE: "스트라이프",
@@ -33,5 +41,5 @@ export const PATTERN_TYPES = {
 export const COLOR_TONES = {
     LIGHT: "밝은 계열",
     DARK: "어두운 계열",
-    NOTCONSIDERED: "고려하지 않음",
+    NOT_CONSIDERED: "고려하지 않음",
 };

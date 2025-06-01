@@ -40,7 +40,7 @@ const SetprofilePage = () => {
   const handleImageUpload = (file, preview) => {
     const imageData = { file, preview };
     setUploadedImage(imageData);
-    setBodyImage(imageData); // 전역 상태에 저장
+    setBodyImage(imageData.file); // 전역 상태에 저장
     setIsAnalyzed(false);
   };
 

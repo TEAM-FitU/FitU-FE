@@ -1,14 +1,20 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import ProgressBar from "../components/ProgressBar/ProgressBar";
 import ProfileForm from "../components/ProfileForm";
 import BodyImageUploader from "../components/BodyImageUploader";
+import useUserStore from "../store/userStore";
 
 const SetprofilePage = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [isAnalyzed, setIsAnalyzed] = useState(false);
   const [isAnalysisInProgress, setIsAnalysisInProgress] = useState(false);
   const imageUploaderRef = useRef(null);
+
+  const {setProfile, setBodyImage} = useUserStore();
+
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     age: "",
@@ -32,7 +38,9 @@ const SetprofilePage = () => {
   }, [uploadedImage, isAnalyzed, isAnalysisInProgress]);
 
   const handleImageUpload = (file, preview) => {
-    setUploadedImage({ file, preview });
+    const imageData = { file, preview };
+    setUploadedImage(imageData);
+    setBodyImage(imageData.file); // 전역 상태에 저장
     setIsAnalyzed(false);
   };
 
@@ -41,13 +49,18 @@ const SetprofilePage = () => {
       URL.revokeObjectURL(uploadedImage.preview);
     }
     setUploadedImage(null);
+    setBodyImage(null); // 전역 상태에서도 제거
     setIsAnalyzed(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    alert("폼이 제출되었습니다!");
+    // 전역 상태에 프로필 정보 저장
+    setProfile(form); 
+    // 의상 등록 페이지로 이동
+    navigate('/closet-registration');
+    
   };
 
   return (

@@ -18,9 +18,8 @@ const Header = () => {
                         >
                             내 프로필
                         </Link>
-                        {/* TODO 내 옷장 이동 경로 수정 */}
                         <Link
-                            to="/"
+                            to="/my-closet"
                             className="hidden md:flex text-black hover:bg-gray-100 font-medium rounded-lg text-sm px-4 py-2 text-center"
                         >
                             내 옷장
@@ -45,8 +44,7 @@ const Header = () => {
                             <a href="/my-profile" className="block py-2 px-3 text-gray-900 rounded-lg hover:bg-black hover:text-white">내 프로필</a>
                         </li>
                         <li>
-                            {/* TODO 내 옷장 이동 경로 수정 */}
-                            <a href="/" className="block py-2 px-3 text-gray-900 rounded-lg hover:bg-black hover:text-white">내 옷장</a>
+                            <a href="/my-closet" className="block py-2 px-3 text-gray-900 rounded-lg hover:bg-black hover:text-white">내 옷장</a>
                         </li>
                     </ul>
                 </div>

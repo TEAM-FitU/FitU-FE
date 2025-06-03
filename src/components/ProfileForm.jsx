@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { SKINTONES } from "../constants/skintones";
 import SkinTonePopover from "./SkinTonePopover";
 
@@ -11,16 +10,16 @@ const createSelectOptions = (optionsObj) =>
 
 const skinToneOptions = createSelectOptions(SKINTONES);
 
-const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
+const ProfileForm = ({ profile, setProfile, handleSubmit, isEdit, disabled }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+        setProfile({ ...profile, [name]: value });
     };
 
     // 피부톤 선택 변경 시 처리 함수
     const handleSkinToneChange = (e) => {
         const { value } = e.target;
-        setForm((prev) => ({ ...prev, skinTone: value }));
+        setProfile({ ...profile, skinTone: value });
     };
 
     return (
@@ -35,7 +34,7 @@ const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
                             type='number'
                             name='age'
                             id='age'
-                            value={form.age}
+                            value={profile.age}
                             onChange={handleChange}
                             min={10}
                             max={100}
@@ -57,7 +56,7 @@ const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
                                 type='radio'
                                 name='gender'
                                 value='MALE'
-                                checked={form.gender === "MALE"}
+                                checked={profile.gender === "MALE"}
                                 onChange={handleChange}
                                 className='w-4 h-[43px] border-[#828282] accent-black focus:ring-0 focus:outline-none'
                                 required
@@ -69,7 +68,7 @@ const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
                                 type='radio'
                                 name='gender'
                                 value='FEMALE'
-                                checked={form.gender === "FEMALE"}
+                                checked={profile.gender === "FEMALE"}
                                 onChange={handleChange}
                                 className='w-4 h-[43px] border-[#828282] accent-black focus:ring-0 focus:outline-none'
                             />
@@ -88,7 +87,7 @@ const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
                                 type='number'
                                 name='height'
                                 id='height'
-                                value={form.height}
+                                value={profile.height}
                                 onChange={handleChange}
                                 placeholder='키'
                                 min={0}
@@ -105,7 +104,7 @@ const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
                                 type='number'
                                 name='weight'
                                 id='weight'
-                                value={form.weight}
+                                value={profile.weight}
                                 onChange={handleChange}
                                 placeholder='몸무게'
                                 min={3}
@@ -127,7 +126,7 @@ const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
                         <select
                             id='skinTone'
                             name='skinTone'
-                            value={form.skinTone}
+                            value={profile.skinTone}
                             onChange={handleSkinToneChange}
                             required
                             className='w-[250px] bg-white border border-[#828282] h-[43px] rounded-lg focus:ring-blue-500 focus:border-blue-500 px-2'
@@ -147,7 +146,12 @@ const ProfileForm = ({ form, setForm, handleSubmit, isEdit }) => {
             <div className='flex justify-center mt-[3.75rem] mb-4'>
                 <button
                     type='submit'
-                    className='h-[43px] px-[1.375rem] py-[11px] text-[1rem] text-white bg-black rounded-lg flex items-center justify-center cursor-pointer'
+                    disabled={disabled}
+                    className={`h-[43px] px-[1.375rem] py-[11px] text-[1rem] rounded-lg flex items-center justify-center text-white
+                    ${disabled
+                            ? "bg-[#828282] cursor-not-allowed"
+                            : "bg-black hover:bg-[#828282] cursor-pointer transition-colors duration-300"}
+                    `}
                 >
                     {isEdit ? "완료" : "다음"}
                 </button>

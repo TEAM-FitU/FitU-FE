@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import ProfileForm from "../components/ProfileForm";
 import BodyImageUploader from "../components/BodyImageUploader";
-
+import useUserStore from "../store/userStore";
+import { analyzeBodyImage, fetchProfile, updateProfile } from "../api/profileAPI";
+import toast from "react-hot-toast";
 
 const MyProfilePage = () => {
     const [uploadedImage, setUploadedImage] = useState(null);
@@ -10,49 +13,110 @@ const MyProfilePage = () => {
     const [isAnalysisInProgress, setIsAnalysisInProgress] = useState(false);
     const imageUploaderRef = useRef(null);
 
-    const [form, setForm] = useState({
-        age: "",
-        gender: "",
-        height: "",
-        weight: "",
-        skinTone: "",
-    });
+    const { profile, setProfile, setBodyImageUrl } = useUserStore();
 
-    useEffect(() => {
-        if (uploadedImage && !isAnalyzed && !isAnalysisInProgress) {
-            setIsAnalysisInProgress(true);
+    const [isLoading, setIsLoading] = useState(false);
 
-            const timer = setTimeout(() => {
-                setIsAnalysisInProgress(false);
-                setIsAnalyzed(true);
-            }, 2000);
+    const navigate = useNavigate();
 
-            return () => clearTimeout(timer);
-        }
-    }, [uploadedImage, isAnalyzed, isAnalysisInProgress]);
-
-    const handleImageUpload = (file, preview) => {
+    const handleImageUpload = async (file, preview) => {
+        setIsLoading(true);
         setUploadedImage({ file, preview });
         setIsAnalyzed(false);
-    };
+        setIsAnalysisInProgress(true);
+
+        try {
+            const response = await analyzeBodyImage(file);
+
+            if (Array.isArray(response.warnings) && response.warnings.length > 0) {
+                alert(response.warnings.join("\n"));
+
+                handleImageRemove();
+            } else {
+                setBodyImageUrl(response.s3Url);
+
+                setIsAnalyzed(true);
+
+                toast.success("전신 사진 업로드 및 검증 성공!");
+            }
+        }
+        catch (error) {
+            console.error("전신 사진 유효성 검증 오류:", error);
+            toast.error("전신 사진 유효성 검증에 실패했습니다.");
+        } finally {
+            setIsLoading(false);
+            setIsAnalysisInProgress(false);
+        };
+    }
 
     const handleImageRemove = () => {
         if (uploadedImage?.preview) {
             URL.revokeObjectURL(uploadedImage.preview);
         }
+
         setUploadedImage(null);
+
+        setBodyImageUrl(null);
+
         setIsAnalyzed(false);
     };
 
     useEffect(() => {
-        // TODO 개인 프로필 조회 API 호출 
-        // axios.get("/user/profile").then(res => setForm(res.data));
+        getProfile();
     }, []);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const getProfile = async () => {
+        try {
+            const userId = localStorage.getItem("userId");
 
-        alert("폼이 제출되었습니다!");
+            if (!userId) {
+                alert("사용자 정보가 없습니다. 프로필을 설정해주세요.");
+                navigate("/set-profile");
+                return;
+            }
+
+            const response = await fetchProfile(userId);
+
+            if (response) {
+                setProfile({
+                    age: response.age || "",
+                    gender: response.gender || "",
+                    height: response.height || "",
+                    weight: response.weight || "",
+                    skinTone: response.skinTone || "",
+                    bodyImageUrl: response.bodyImageUrl || null,
+                });
+
+                if (response.bodyImageUrl) {
+                    setUploadedImage({
+                        file: null,
+                        preview: response.bodyImageUrl,
+                    });
+                } else {
+                    setUploadedImage(null);
+                }
+            }
+        } catch (e) {
+            console.error("프로필 정보를 가져오는데 실패했습니다:", e);
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const userId = localStorage.getItem("userId");
+
+            if (!userId) {
+                alert("사용자 정보가 없습니다. 프로필을 설정해주세요.");
+                navigate("/set-profile");
+                return;
+            }
+
+            await updateProfile(userId, profile);
+            toast.success("프로필 업데이트 성공!");
+        } catch (e) {
+            console.error("프로필 업데이트를 실패했습니다:", e);
+        }
     };
 
     return (
@@ -72,10 +136,11 @@ const MyProfilePage = () => {
                     </p>
                     <div className="mt-[3.75rem]">
                         <ProfileForm
-                            form={form}
-                            setForm={setForm}
+                            profile={profile}
+                            setProfile={setProfile}
                             handleSubmit={handleSubmit}
                             isEdit={true}
+                            disabled={isLoading}
                         />
                     </div>
                 </div>

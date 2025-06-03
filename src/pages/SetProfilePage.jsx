@@ -5,6 +5,8 @@ import ProgressBar from "../components/ProgressBar/ProgressBar";
 import ProfileForm from "../components/ProfileForm";
 import BodyImageUploader from "../components/BodyImageUploader";
 import useUserStore from "../store/userStore";
+import { analyzeBodyImage } from "../api/profileAPI";
+import toast from "react-hot-toast";
 
 const SetprofilePage = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -12,44 +14,56 @@ const SetprofilePage = () => {
   const [isAnalysisInProgress, setIsAnalysisInProgress] = useState(false);
   const imageUploaderRef = useRef(null);
 
-  const {setProfile, setBodyImage} = useUserStore();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { profile, setProfile, setBodyImageUrl } = useUserStore();
 
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    age: "",
-    gender: "",
-    height: "",
-    weight: "",
-    skinTone: ""
-  });
-
-  useEffect(() => {
-    if (uploadedImage && !isAnalyzed && !isAnalysisInProgress) {
-      setIsAnalysisInProgress(true);
-
-      const timer = setTimeout(() => {
-        setIsAnalysisInProgress(false);
-        setIsAnalyzed(true);
-      }, 2000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [uploadedImage, isAnalyzed, isAnalysisInProgress]);
-
-  const handleImageUpload = (file, preview) => {
-    const imageData = { file, preview };
-    setUploadedImage(imageData);
-    setBodyImage(imageData.file); // 전역 상태에 저장
+  const handleImageUpload = async (file, preview) => {
+    setIsLoading(true);
+    setUploadedImage({ file, preview });
     setIsAnalyzed(false);
-  };
+    setIsAnalysisInProgress(true);
+
+    try {
+      const response = await analyzeBodyImage(file);
+
+      if (Array.isArray(response.warnings) && response.warnings.length > 0) {
+        alert(response.warnings.join("\n"));
+
+        setIsAnalysisInProgress(false);
+
+        handleImageRemove();
+
+        return;
+      }
+
+      setBodyImageUrl(response.s3Url);
+
+      setIsAnalyzed(true);
+
+      toast.success("전신 사진 업로드 및 검증 성공!");
+    }
+    catch (error) {
+      console.error("전신 사진 유효성 검증 오류:", error);
+      handleImageRemove();
+      toast.error("전신 사진 유효성 검증에 실패했습니다.");
+    } finally {
+      setIsAnalysisInProgress(false);
+      setIsLoading(false);
+    };
+  }
 
   const handleImageRemove = () => {
     if (uploadedImage?.preview) {
       URL.revokeObjectURL(uploadedImage.preview);
     }
+
     setUploadedImage(null);
-    setBodyImage(null); // 전역 상태에서도 제거
+
+    setBodyImageUrl(null); // 전역 상태에서도 제거
+    
     setIsAnalyzed(false);
   };
 
@@ -57,10 +71,10 @@ const SetprofilePage = () => {
     e.preventDefault();
 
     // 전역 상태에 프로필 정보 저장
-    setProfile(form); 
+    setProfile(profile);
+
     // 의상 등록 페이지로 이동
     navigate('/closet-registration');
-    
   };
 
   return (
@@ -68,7 +82,7 @@ const SetprofilePage = () => {
       <Header />
       <h1 className="pt-[7.5rem] text-[2rem] font-bold text-center">FitU</h1>
       <ProgressBar activeStep={1} />
-      
+
       <div className="flex flex-col items-center mt-[3.75rem]">
         <BodyImageUploader
           ref={imageUploaderRef}
@@ -81,10 +95,11 @@ const SetprofilePage = () => {
         </p>
         <div className="mt-[3.75rem]">
           <ProfileForm
-            form={form}
-            setForm={setForm}
+            profile={profile}
+            setProfile={setProfile}
             handleSubmit={handleSubmit}
             isEdit={false}
+            disabled={isLoading}
           />
         </div>
       </div>

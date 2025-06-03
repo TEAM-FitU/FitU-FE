@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import "./App.css";
 import ClosetRegistrationPage from "./pages/ClosetRegistrationPage/ClosetRegistrationPage.jsx";
 import MyClosetPage from "./pages/MyClosetPage/MyClosetPage.jsx";
@@ -10,6 +11,7 @@ import CompletePage from "./pages/CompletePage.jsx";
 function App() {
     return (
         <>
+        <Toaster/>
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<HomePage />} />

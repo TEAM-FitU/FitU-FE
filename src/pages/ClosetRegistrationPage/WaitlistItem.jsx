@@ -19,10 +19,8 @@ const WaitlistItem = ({ item, onRemove }) => {
     const attributeLabels = Object.entries(item.attributes)
         .filter(([_, value]) => value) // 빈 값 제외
         .map(([type, key]) => getLabelFromKey(type, key)); // 키를 해당 타입의 한글 레이블로 변환
-
-    // 속성값들을 배열로 변환 (빈 값 제외)
-    const attributeValues = Object.values(item.attributes).filter((value) => value);
-    return (
+ 
+     return (
         <div className='relative border border-gray-300 rounded-lg overflow-hidden flex flex-col bg-white w-full h-[180px] shadow-sm'>
             {/* 삭제 버튼 */}
             <button
@@ -36,7 +34,7 @@ const WaitlistItem = ({ item, onRemove }) => {
 
             {/* 이미지 영역 (70%) */}
             <div className='w-full h-[70%] overflow-hidden'>
-                <img src={item.image} alt='의류 이미지' className='w-full h-full object-cover' />
+                <img src={item.s3Url || item.image} alt='의류 이미지' className='w-full h-full object-contain' />
             </div>
 
             {/* 구분선 */}

@@ -3,16 +3,17 @@ export const analyzeClothingImage = async (imageFile) => {
     const formData = new FormData();
     formData.append("clothesImage", imageFile);
 
-    const response = await fetch("http://localhost:8080/clothes/image-analysis", {
+    const serverResponse = await fetch("http://localhost:8080/clothes/image-analysis", {
         method: "POST",
         body: formData,
     });
 
-    if (!response.ok) {
-        // 에러를 던져서 analyzeClothingImage를 호출한 쪽에서 처리
-        throw new Error();
+    if (!serverResponse.ok) {
+        throw new Error(`의류 이미지 분석 API 호출 실패: ${serverResponse.status}`);
     }
-    return await response.json();
+
+    const response = await serverResponse.json();
+    return response.data;
 };
 
 // 사용자 프로필, 옷장 등록 api
@@ -33,8 +34,13 @@ export const registerUserWithCloset = async (profileData, clothingItems) => {
     formData.append("skinTone", profileWithoutBodyImage.skinTone);
 
     clothingItems.forEach((item, index) => {
-        // 의류 이미지
-        formData.append(`clothesItems[${index}].clothesImage`, item.file);
+        if (item.file) {
+            formData.append(`clothesItems[${index}].clothesImageFile`, item.file);
+        }
+
+        if (item.s3Url) {
+            formData.append(`clothesItems[${index}].clothesImageUrl`, item.s3Url);
+        }
         // 속성들, 주의 사항: 프론트에서 type, category는 백엔드에서 category, type으로 매핑
         formData.append(`clothesItems[${index}].type`, item.attributes.category);
         formData.append(`clothesItems[${index}].category`, item.attributes.type);
@@ -42,7 +48,7 @@ export const registerUserWithCloset = async (profileData, clothingItems) => {
         formData.append(`clothesItems[${index}].color`, item.attributes.tone);
     });
 
-    const response = await fetch("http://localhost:8080/clothes", {
+    const response = await fetch("http://localhost:8080/clothes/registration", {
         method: "POST",
         body: formData,
     });
@@ -52,6 +58,39 @@ export const registerUserWithCloset = async (profileData, clothingItems) => {
     }
     const result = await response.json();
     return result.data; // 사용자 uuid값 반환
+};
+
+// 새롭게 옷 추가할때
+export const registerNewClosetItems = async (clothingItems, userId) => {
+    const formData = new FormData();
+
+    clothingItems.forEach((item, index) => {
+        if (item.file) {
+            formData.append(`clothesItems[${index}].clothesImageFile`, item.file);
+        }
+
+        // 의류 이미지
+        formData.append(`clothesItems[${index}].clothesImageUrl`, item.s3Url);
+        // 속성들, 주의 사항: 프론트에서 type, category는 백엔드에서 category, type으로 매핑
+        formData.append(`clothesItems[${index}].type`, item.attributes.category);
+        formData.append(`clothesItems[${index}].category`, item.attributes.type);
+        formData.append(`clothesItems[${index}].pattern`, item.attributes.pattern);
+        formData.append(`clothesItems[${index}].color`, item.attributes.tone);
+    });
+
+    const response = await fetch("http://localhost:8080/clothes", {
+        method: "POST",
+        headers: {
+            "Fitu-User-UUID": userId,
+        },
+        body: formData,
+    });
+
+    if (!response.ok) {
+        throw new Error();
+    }
+    const result = await response.json();
+    return result.data;
 };
 
 // 초기 옷장 조회 API

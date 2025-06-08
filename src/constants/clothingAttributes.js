@@ -33,7 +33,7 @@ export const PATTERN_TYPES = {
     ETC: "기타",
     ETCNATURE: "자연",
     GEOMETRIC: "기하학",
-    PLANT: "식물",
+    PLANTS: "식물",
     STRIPE: "스트라이프",
     SYMBOL: "심볼",
 };

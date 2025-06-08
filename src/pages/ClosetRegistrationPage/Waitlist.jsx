@@ -16,7 +16,7 @@ const Waitlist = ({ items, onRemoveItem }) => {
                 >
                     {/* 8개(2줄)까지는 스크롤 없이, 9개(3줄)부터 스크롤 생김 */}
                     {items.map((item) => (
-                        <WaitlistItem key={item.id} item={item} onRemove={onRemoveItem} />
+                        <WaitlistItem key={item.id} item={item} onRemove={onRemoveItem}/>
                     ))}
                 </div>
             )}

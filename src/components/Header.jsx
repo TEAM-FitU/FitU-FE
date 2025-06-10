@@ -1,8 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 const Header = () => {
+    const userId = localStorage.getItem("userId");
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const location = useLocation();
+    const isHomePage = location.pathname === '/';
 
     return (
         <>
@@ -12,18 +16,31 @@ const Header = () => {
                         <img src="/logo-large.png" className="h-10 md:h-9" alt="FitU Logo" />
                     </Link>
                     <div className="flex md:order-2">
-                        <Link
-                            to="/my-profile"
-                            className="hidden md:flex text-black hover:bg-gray-100 font-medium rounded-lg text-sm px-4 py-2 text-center"
-                        >
-                            내 프로필
-                        </Link>
-                        <Link
-                            to="/my-closet"
-                            className="hidden md:flex text-black hover:bg-gray-100 font-medium rounded-lg text-sm px-4 py-2 text-center"
-                        >
-                            내 옷장
-                        </Link>
+                        {userId ? (
+                            <>
+                                <Link
+                                    to="/my-profile"
+                                    className="hidden md:flex text-black hover:bg-gray-100 font-medium rounded-lg text-sm px-4 py-2 text-center"
+                                >
+                                    내 프로필
+                                </Link>
+                                <Link
+                                    to="/my-closet"
+                                    className="hidden md:flex text-black hover:bg-gray-100 font-medium rounded-lg text-sm px-4 py-2 text-center"
+                                >
+                                    내 옷장
+                                </Link>
+                            </>
+                        ) : (
+                            isHomePage && (
+                                <Link
+                                    to="/set-profile"
+                                    className="hidden md:flex text-black hover:bg-gray-100 font-medium rounded-lg text-sm px-4 py-2 text-center"
+                                >
+                                    시작하기
+                                </Link>
+                            )
+                        )}
                         <button
                             type="button"
                             className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
@@ -40,12 +57,20 @@ const Header = () => {
             {menuOpen && (
                 <div className="fixed top-14 left-0 w-full z-30 md:hidden px-2">
                     <ul className="flex flex-col p-4 font-medium border border-gray-100 rounded-lg bg-gray-50 w-full">
-                        <li>
-                            <a href="/my-profile" className="block py-2 px-3 text-gray-900 rounded-lg hover:bg-black hover:text-white">내 프로필</a>
-                        </li>
-                        <li>
-                            <a href="/my-closet" className="block py-2 px-3 text-gray-900 rounded-lg hover:bg-black hover:text-white">내 옷장</a>
-                        </li>
+                        {userId ? (
+                            <>
+                                <li>
+                                    <a href="/my-profile" className="block py-2 px-3 text-gray-900 rounded-lg hover:bg-black hover:text-white">내 프로필</a>
+                                </li>
+                                <li>
+                                    <a href="/my-closet" className="block py-2 px-3 text-gray-900 rounded-lg hover:bg-black hover:text-white">내 옷장</a>
+                                </li>
+                            </>
+                        ) : (
+                            <li>
+                                <a href="/set-profile" className="block py-2 px-3 text-gray-900 rounded-lg hover:bg-black hover:text-white">시작하기</a>
+                            </li>
+                        )}
                     </ul>
                 </div>
             )}

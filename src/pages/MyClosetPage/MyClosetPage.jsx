@@ -1,3 +1,5 @@
+import "./MyClosetPage.styles.css";
+
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
@@ -37,7 +39,6 @@ const MyClosetPage = () => {
 
                 setIsLoading(true);
 
-                // API 호출 시 userId 전달
                 const response = await fetchClosetItems(userId);
 
                 if (response) {
@@ -47,8 +48,6 @@ const MyClosetPage = () => {
                         imageUrl: item.clothesImageUrl,
                         tags: [item.category, item.type, item.pattern, item.color].filter(Boolean), // null/undefined 제거
                     }));
-
-                    console.log("옷장 아이템:", formattedItems);
 
                     setClosetItems(formattedItems);
                 } else {
@@ -68,8 +67,6 @@ const MyClosetPage = () => {
 
     // 태그 영어 -> 한글 변환, 카테고리, 타입 위치 변경
     const translateTag = (tag, index) => {
-        console.log("translateTag called with tag:", tag, "and index:", index);
-
         if (!tag) return null;
 
         if (index === 1) {
@@ -129,7 +126,7 @@ const MyClosetPage = () => {
 
     const handleEditItem = (itemId) => {
         const itemToEdit = closetItems.find((item) => item.id === itemId);
-        console.log("수정할 아이템:", itemToEdit);
+
         setCurrentEditItem(itemToEdit);
         setIsEditModalOpen(true);
     };
@@ -137,8 +134,6 @@ const MyClosetPage = () => {
     const handleSaveEdit = async (editedItem) => {
         try {
             const hasImage = editedItem.prevImage || editedItem.newImage;
-
-            console.log("수정된 아이템 데이터:", hasImage);
 
             // 이미지가 없을 경우 경고
             if (!hasImage) {
@@ -208,16 +203,17 @@ const MyClosetPage = () => {
         <div className='min-h-screen bg-[#F7F7F7]'>
             <Header />
 
-            <main className='max-w-6xl mx-auto flex flex-col'>
+            <main className='myCloset-main xl:max-w-7xl mx-auto flex flex-col'>
                 <div className='mb-4 w-full'>
                     <h1 className='text-[2rem] font-bold text-center text-black mb-[4.375rem] mt-[7.5rem]'>나의 옷장</h1>
                     {/* 필터와 옷 추가하기 */}
-                    <div className='flex flex-col sm:flex-row justify-between items-center sm:space-x-4'>
+                    <div className='myCloset-main__div flex flex-col sm:flex-row justify-between items-center sm:space-x-4'>
                         {/* 필터는 왼쪽에 */}
                         <div className='w-full sm:w-auto mb-4 sm:mb-0'>
                             <ClosetFilter onFilterChange={handleFilterChange} />
                         </div>
                         {/* 옷 추가하기 버튼은 오른쪽에 */}
+
                         <Link
                             to='/closet-add'
                             className='flex items-center bg-black text-white  h-[2.8125rem] text-[1rem] font-semibold px-3 py-2 rounded-md hover:bg-gray-800 transition-colors whitespace-nowrap cursor-pointer'

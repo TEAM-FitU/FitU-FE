@@ -95,26 +95,15 @@ const AttributeSelectors = ({ attributes, onAttributeChange, isAnalyzed }) => {
             textAlign: "center",
         }),
     };
-
-    // React-Select 쓰기 전 드랍다운  렌더링 함수
-    // const renderOptions = (optionsArray) =>
-    //     optionsArray.map((option) => (
-    //         <option
-    //             key={option}
-    //             value={option === "선택안함" ? "" : option}
-    //         >
-    //             {option}
-    //         </option>
-    //     ));
-
+  
     return (
-        <div className='flex flex-col justify-between h-full w-full max-w-[240px] space-y-4'>
+        <div className='flex flex-col justify-center h-[12.5rem] max-sm:w-[13.75rem] w-[15rem] max-w-[15rem] space-y-5'>
             {/* 카테고리 & 종류 그룹 */}{" "}
             <div className={groupClasses}>
                 <label htmlFor='category' className={commonLabelClasses}>
                     카테고리 <span className='text-red-500'>*</span>
                 </label>
-                <div className={dropdownContainerClasses}>
+                <div className={`${dropdownContainerClasses} ${!isAnalyzed ? "cursor-not-allowed" : "cursor-pointer"}`}>
                     <Select
                         inputId='category'
                         name='category'
@@ -132,12 +121,12 @@ const AttributeSelectors = ({ attributes, onAttributeChange, isAnalyzed }) => {
                         styles={customStyles}
                         isSearchable={false}
                         placeholder={!isAnalyzed && "분석 전"}
-                        // isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
+                        isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
                     />
                 </div>
             </div>
             {/* 상세 종류 그룹 */}
-            <div className={groupClasses}>
+            <div className={`${groupClasses} ${!isAnalyzed ? "cursor-not-allowed" : "cursor-pointer"}`}>
                 <div className={commonLabelClasses}>{/* 빈 div로 레이블 공간 확보 */}</div>
                 <div className={dropdownContainerClasses}>
                     <Select
@@ -155,12 +144,12 @@ const AttributeSelectors = ({ attributes, onAttributeChange, isAnalyzed }) => {
                         styles={customStyles}
                         isSearchable={false}
                         placeholder={!isAnalyzed && "분석 전"}
-                        // isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
+                        isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
                     />
                 </div>
             </div>
             {/* 패턴 그룹 */}
-            <div className={groupClasses}>
+            <div className={`${groupClasses} ${!isAnalyzed ? "cursor-not-allowed" : "cursor-pointer"}`}>
                 <label htmlFor='pattern' className={commonLabelClasses}>
                     패턴 <span className='text-red-500'>*</span>
                 </label>
@@ -180,12 +169,12 @@ const AttributeSelectors = ({ attributes, onAttributeChange, isAnalyzed }) => {
                         styles={customStyles}
                         isSearchable={false}
                         placeholder={!isAnalyzed && "분석 전"}
-                        // isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
+                        isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
                     />
                 </div>
             </div>
             {/* 톤 그룹 */}
-            <div className={groupClasses}>
+            <div className={`${groupClasses} ${!isAnalyzed ? "cursor-not-allowed" : "cursor-pointer"}`}>
                 <label htmlFor='tone' className={commonLabelClasses}>
                     톤 <span className='text-red-500'>*</span>
                 </label>
@@ -206,7 +195,7 @@ const AttributeSelectors = ({ attributes, onAttributeChange, isAnalyzed }) => {
                         styles={customStyles}
                         isSearchable={false}
                         placeholder={!isAnalyzed && "분석 전"}
-                        // isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
+                        isDisabled={!isAnalyzed} // 분석 전에는 비활성화 추후 AI 분석할 때때 주석 해제 예정
                     />
                 </div>
             </div>

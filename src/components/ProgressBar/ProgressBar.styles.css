@@ -1,14 +1,29 @@
 .progress-steps {
   width: 100%;
   max-width: 700px;
-  margin: 50px auto 0;
+  margin: 70px auto 0;
   padding: 0 16px 10px;
+}
+
+@media screen and (max-width: 750px) {
+  .progress-steps {
+    display: flex;
+    justify-content: center;
+  }
+  
 }
 
 .progress-steps__container {
   display: flex;
   justify-content: space-between; 
-  position: relative;
+  position: relative; 
+}
+
+@media screen and (max-width: 750px) {
+  .progress-steps__container {
+    width: 400px;
+  }
+  
 }
 
 .progress-steps__container:before {

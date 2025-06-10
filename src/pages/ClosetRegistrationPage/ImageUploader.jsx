@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useImperativeHandle, forwardRef } from "react";
 import { PhotoIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
-const ImageUploader = forwardRef(({ uploadedImage, onImageUpload, onImageRemove, onAnalysisComplete, isAnalyzing }, ref) => {
+const ImageUploader = forwardRef(({ uploadedImage, onImageUpload, onImageRemove, isAnalyzing }, ref) => {
     const fileInputRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
 
@@ -23,7 +23,6 @@ const ImageUploader = forwardRef(({ uploadedImage, onImageUpload, onImageRemove,
             }
             const previewUrl = URL.createObjectURL(file);
             onImageUpload(file, previewUrl);
-            // AI 분석 시 isAnalyzing을 부모 컴포넌트에서 true로 설정
         }
     };
 
@@ -80,7 +79,7 @@ const ImageUploader = forwardRef(({ uploadedImage, onImageUpload, onImageRemove,
 
     return (
         <div
-            className={`relative w-56 h-[210px] border-2 border-dashed rounded-lg flex flex-col items-center justify-center text-center
+            className={`img-uploader-container relative h-[12.5rem] max-sm:w-[13.75rem] w-[15rem] border-2 border-dashed rounded-lg flex flex-col items-center justify-center text-center
                             ${
                                 uploadedImage
                                     ? "border-gray-300 bg-white"
@@ -104,7 +103,7 @@ const ImageUploader = forwardRef(({ uploadedImage, onImageUpload, onImageRemove,
                             src={uploadedImage.preview}
                             alt='업로드된 의상'
                             className='w-full h-full object-cover rounded-md'
-                            style={{ objectFit: "cover", objectPosition: "center" }}
+                            style={{ objectFit: "contain", objectPosition: "center" }}
                         />
                     </div>
 

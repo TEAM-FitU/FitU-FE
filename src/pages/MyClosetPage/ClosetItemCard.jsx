@@ -7,9 +7,7 @@ const ClosetItemCard = ({ imageUrl, tags = [], onEdit, onDelete }) => {
     const buttonRef = useRef(null);
 
     const displayTags = tags.slice(0, 4);
-
-    console.log("displayTags:", displayTags);
-
+ 
     // 외부 클릭 감지를 위한 이벤트 리스너
     useEffect(() => {
         function handleClickOutside(event) {
@@ -75,7 +73,7 @@ const ClosetItemCard = ({ imageUrl, tags = [], onEdit, onDelete }) => {
                     <img
                         src={imageUrl || "https://via.placeholder.com/200/f0f0f0/cccccc?text=No+Image"}
                         alt='옷 이미지'
-                        className='absolute inset-0 w-full h-full object-cover p-1'
+                        className='absolute inset-0 w-full h-full object-contain p-1'
                     />
                 </div>
                 {/* 태그 영역 - 나머지 공간(30%) 차지 */}

@@ -1,28 +1,28 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ClipLoader } from "react-spinners";
+import { RingLoader } from "react-spinners";
+
 import ImageUploader from "./ImageUploader";
 import AttributeSelectors from "./AttributeSelectors";
 import Waitlist from "./Waitlist";
 import Header from "../../components/Header";
 import useUserStore from "../../store/userStore";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
-import { analyzeClothingImage, registerUserWithCloset } from "../../api/clothesAPI";
-
-const initialAttributes = {
-    category: "",
-    type: "",
-    pattern: "",
-    tone: "",
-};
+import { analyzeClothingImage, registerNewClosetItems, registerUserWithCloset } from "../../api/clothesAPI";
 
 const requiredFields = ["age", "gender", "height", "weight", "skinTone"];
 
 const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
     const [uploadedImage, setUploadedImage] = useState(null);
-    const [attributes, setAttributes] = useState(initialAttributes);
+    const [attributes, setAttributes] = useState({
+        category: "",
+        type: "",
+        pattern: "",
+        tone: "",
+    });
     const [isAnalyzed, setIsAnalyzed] = useState(false);
     const [isAnalysisInProgress, setIsAnalysisInProgress] = useState(false);
+    const [isAnalysisSuccess, setIsAnalysisSuccess] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
     const [waitlistItems, setWaitlistItems] = useState([]);
     const [isWaitlistExpanded, setIsWaitlistExpanded] = useState(true);
@@ -51,27 +51,38 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
         setIsAnalysisInProgress(true); // 버튼에 분석 중 상태 표시
 
         try {
-            // 이미지 분석 API 호출
             const result = await analyzeClothingImage(file);
-            console.log("이미지 분석 결과:", result);
 
-            // 분석 결과로 속성 업데이트
-            if (result.attributes) {
+            if (result) {
+                setUploadedImage({
+                    file: null,
+                    preview: result.imageUrl,
+                });
+
                 setAttributes({
-                    category: result.attributes.category || "",
-                    type: result.attributes.type || "",
-                    pattern: result.attributes.pattern || "",
-                    tone: result.attributes.tone || "",
+                    category: result.type || "",
+                    type: result.category || "",
+                    pattern: result.pattern || "",
+                    tone: result.color || "",
                 });
             }
 
             setIsAnalyzed(true);
+            setIsAnalysisSuccess(true);
         } catch (error) {
             console.error("이미지 분석 오류:", error);
-            // 추후에 유효성 검사에 실패 했을때와 다른 오류 구분해서 알림 처리 필요
-            setTimeout(() => {
-                alert("의상 분석에 실패했습니다. 다시시도 하거나 수동으로 선택해주세요.");
-            }, 500);
+            setIsAnalyzed(true);
+            setIsAnalysisSuccess(false);
+
+            if (String(error).includes("400")) {
+                setTimeout(() => {
+                    alert("이미지 파일 형식/크기가 올바르지 않습니다. 다시시도 하거나 수동으로 선택해주세요.");
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    alert("의상 분석에 실패했습니다. 다시시도 하거나 수동으로 선택해주세요.");
+                }, 500);
+            }
         } finally {
             setIsAnalysisInProgress(false); // 분석 완료 상태
         }
@@ -83,7 +94,12 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
         }
         setUploadedImage(null);
         setIsAnalyzed(false);
-        setAttributes(initialAttributes);
+        setAttributes({
+            category: "",
+            type: "",
+            pattern: "",
+            tone: "",
+        });
     };
 
     const handleAttributeChange = (name, value) => {
@@ -98,26 +114,24 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
 
         // 속성 유효성 검사
         const isAttributesValid = Object.values(attributes).every((value) => value && value.trim() !== "");
-        console.log("속성 유효성 검사 결과:", isAttributesValid);
 
         if (!isAttributesValid) {
             alert("모든 의류 속성(카테고리, 타입, 패턴, 톤)을 선택해주세요.");
             return;
         }
 
-        // 이미지 URL에서 Blob으로 가져오기
+        // // 이미지 URL에서 Blob으로 가져오기 -> 분석에 실패했을경우 미리보기로 사용
         const response = await fetch(uploadedImage.preview);
         const blob = await response.blob();
-
-        // 새로운 URL 생성. 대기 목록에 추가할때 이미지 URL 새로 생성하지 않으면 대기 목록에서 엑박 뜸
-        const newImageUrl = URL.createObjectURL(blob);
+        const analysisFailureUrl = URL.createObjectURL(blob);
 
         // 새로운 대기 목록 항목 생성
         const newItem = {
             id: Date.now().toString(),
-            image: newImageUrl, // 대기 목록에서 프론트 보여주기 용도
-            file: uploadedImage.file, //  실제 백엔드로 보내줄 파일
+            image: !isAnalysisSuccess ? analysisFailureUrl : null, // 분석에 실패했을 경우 대기 목록에서 프론트 미리 보여주기 용도
+            file: !isAnalysisSuccess ? uploadedImage.file : null, //  분석에 실패했을 경우 백엔드로 보내줄 파일
             attributes: { ...attributes },
+            s3Url: isAnalysisSuccess ? uploadedImage.preview : null,
         };
 
         setWaitlistItems((prevItems) => [...prevItems, newItem]);
@@ -158,6 +172,19 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
         };
     };
     const handleNavigation = async (path) => {
+        // 기존 사용자 내 옷장 -> 추가하기시에는 하나만 있으면 등록
+        const userId = localStorage.getItem("userId");
+
+        if (userId && waitlistItems.length !== 0) {
+            setIsRegistering(true);
+            await registerNewClosetItems(waitlistItems, userId);
+            navigate(path);
+            return;
+        } else if (userId && waitlistItems.length === 0) {
+            alert("옷을 추가해주세요.");
+            return;
+        }
+
         // '이전' 버튼은 유효성 검사 없이 이동
         if (path === "/set-profile") {
             navigate(path);
@@ -184,17 +211,25 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                 setIsRegistering(false);
             }
         } else {
-            const errorMessage = "최소한 원피스 1벌 또는 상의와 하의를 각각 1벌씩 추가해야 합니다.";
-            alert(errorMessage);
+            alert("최소한 원피스 1벌 또는 상의와 하의를 각각 1벌씩 추가해야 합니다.");
         }
     };
 
     return (
-        <div className='bg-[#F7F7F7] flex flex-col min-h-screen overflow-x-hidden'>
+        <div className='bg-[#F7F7F7] flex flex-col min-h-screen overflow-x-hidden relative'>
+            {isAnalysisInProgress && (
+                <div className='absolute top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-white/60 flex flex-col items-center justify-center z-20 rounded-xl'>
+                    {/* <ClipLoader color='#8B5CF6' size={50} /> */}
+                    <RingLoader color='#6366F1' size={50} />
+                    <p className='mt-3 font-medium text-zinc-700'>의상 분석 중...</p>
+                </div>
+            )}
+
             {/* 전체 화면 로딩 오버레이 - 등록 중일 때만 표시 */}
             {isRegistering && (
-                <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
-                    <ClipLoader color='#ffffff' size={60} />
+                <div className='absolute top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-white/60 flex flex-col items-center justify-center z-20 rounded-xl'>
+                    <RingLoader color='#6366F1' size={50} />
+                    <p className='mt-3 font-medium text-zinc-700'>의상 등록 중...</p>
                 </div>
             )}
 
@@ -203,22 +238,19 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
             <main className='mb-max-w-4xl mx-auto flex flex-col w-full flex-1 mt-[7.5rem]'>
                 {/* 헤더 밑부분 영역 - props에 따라 조건부 렌더링 */}
                 <div>
-                    <h1 className={`text-[2rem] font-bold text-center text-black ${showProgress ? "mb-0" : "mb-[4.375rem]"}`}>{title}</h1>
+                    <h1 className={`text-[2rem] font-bold text-center text-black`}>{title}</h1>
                     {showProgress && <ProgressBar activeStep={2} />}
                 </div>
+
+                <div className='mt-[4.375rem]'></div>
                 {/* 옷 등록 영역 - 단일 컨테이너로 구성 */}
-                <div className='bg-white shadow-lg rounded-xl pt-8 w-1/2 mx-auto mt-[3.75rem]'>
+                <div className='bg-white shadow-lg rounded-xl pt-8 max-sm:w-[25rem] sm:w-[30rem] md:w-[45rem] 2xl:w-1/2 mx-auto transition-all duration-500 ease-in-out '>
                     {/* 이미지 분석 중 로딩 오버레이 */}
-                    {isAnalysisInProgress && (
-                        <div className='absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center z-20 rounded-xl'>
-                            <ClipLoader color='#000000' size={60} />
-                        </div>
-                    )}
 
                     {/* 내용 영역: 이미지 업로더와 속성 선택기를 포함한 그리드 */}
-                    <div className='grid grid-cols-1 md:grid-cols-2 gap-20 items-stretch'>
+                    <div className='addCloset-main__div grid grid-cols-1 md:grid-cols-2 sm:gap-15 xl:gap-35 lg:gap-20 items-stretch'>
                         {/* 왼쪽: 이미지 업로더 */}
-                        <div className='flex justify-center md:justify-end mb-4 md:mb-0 pr-2 md:pr-8'>
+                        <div className='flex justify-center md:justify-end max-sm:mb-8 mb-8 md:mb-0'>
                             <div className='max-w-xs'>
                                 <ImageUploader
                                     ref={imageUploaderRef}
@@ -230,10 +262,8 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                         </div>
 
                         {/* 오른쪽: 속성 선택기 */}
-                        <div className='flex flex-col pl-2 md:pl-8 justify-center'>
-                            <div>
-                                <AttributeSelectors attributes={attributes} onAttributeChange={handleAttributeChange} isAnalyzed={isAnalyzed} />
-                            </div>
+                        <div className='flex flex-col justify-center sm:items-center max-sm:items-center md:items-start'>
+                            <AttributeSelectors attributes={attributes} onAttributeChange={handleAttributeChange} isAnalyzed={isAnalyzed} />
                         </div>
                     </div>
 
@@ -274,7 +304,7 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                 </div>
                 {/* 대기 목록 표시 영역 - 토글 상태에 따라 표시/숨김 */}
                 <div
-                    className={`w-1/2 mx-auto bg-white shadow-lg rounded-xl flex items-start justify-center overflow-hidden transition-all duration-500 ease-in-out ${
+                    className={`max-sm:w-[25rem] sm:w-[30rem] md:w-[45rem] 2xl:w-1/2 mx-auto bg-white shadow-lg rounded-xl flex items-start justify-center overflow-hidden transition-all duration-500 ease-in-out ${
                         isWaitlistExpanded
                             ? `opacity-100 pt-8 pb-8 ${waitlistItems.length > 8 ? "max-h-[420px]" : ""}`
                             : "max-h-0 opacity-0 mb-0 pt-0 pb-0 border-t-0 border-b-0"
@@ -306,7 +336,7 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                             onClick={() => handleNavigation("/my-closet")}
                             className='h-[2.8125rem] text-[1rem] px-8 py-2 bg-black hover:bg-gray-800 text-white cursor-pointer rounded text-xs font-medium focus:outline-none flex items-center justify-center'
                         >
-                            추가하기
+                            등록
                         </button>
                     </div>
                 )}

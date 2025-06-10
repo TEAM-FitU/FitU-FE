@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { RingLoader } from "react-spinners";
 
 import ImageUploader from "./ImageUploader";
@@ -32,8 +32,8 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
     const { profile } = useUserStore();
 
     const navigate = useNavigate();
+    const location = useLocation();
 
-    // 프로필 정보 확인, 추후 백엔드로 같이 요청 및 최종 저장 후 resetProfile로 프로필 초기화 예정
     useEffect(() => {
         // 프로필 정보가 없으면 프로필 페이지로 리다이렉트
         const hasAllRequiredFields = requiredFields.every((field) => profile[field]);
@@ -42,6 +42,10 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
         if (!hasAllRequiredFields && !userId) {
             alert("프로필 정보가 누락되었습니다. 프로필 페이지로 이동합니다.");
             navigate("/set-profile");
+        }
+
+        if (location.pathname === "/closet-registration" && userId) {
+            navigate("/closet-add");
         }
     }, []);
 

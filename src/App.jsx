@@ -20,7 +20,7 @@ function App() {
                     <Route path='/set-profile' element={<SetProfilePage />} />
                     <Route path='/my-profile' element={<MyProfilePage />} />
                     <Route path='/my-closet' element={<MyClosetPage />} />
-                    <Route path='/closet-add' element={<ClosetRegistrationPage showProgress={false} title='옷 등록' />} />
+                    <Route path='/closet-add' element={<ClosetRegistrationPage showProgress={false} title='의상 등록' />} />
                     <Route path='/closet-registration' element={<ClosetRegistrationPage showProgress={true} title='FitU' />} />
                     <Route path='/completion' element={<CompletePage />} />
                     <Route path="/set-situation" element={<SetSituationPage />} />

@@ -13,25 +13,27 @@ export const analyzeClothingImage = async (imageFile) => {
     }
 
     const response = await serverResponse.json();
+    
     return response.data;
 };
 
 // 사용자 프로필, 옷장 등록 api
 export const registerUserWithCloset = async (profileData, clothingItems) => {
+
     const formData = new FormData();
 
-    const { userBodyImage, ...profileWithoutBodyImage } = profileData;
+    const { bodyImageUrl, ...profileWithoutBodyImageUrl } = profileData;
 
-    if (userBodyImage) {
-        formData.append("userBodyImage", userBodyImage);
+    if (bodyImageUrl) {
+        formData.append("userProfileInfo.bodyImageUrl", bodyImageUrl);
     }
 
     // DTO 바인딩을 쉽게 처리하기 위해
-    formData.append("age", profileWithoutBodyImage.age);
-    formData.append("gender", profileWithoutBodyImage.gender);
-    formData.append("height", profileWithoutBodyImage.height);
-    formData.append("weight", profileWithoutBodyImage.weight);
-    formData.append("skinTone", profileWithoutBodyImage.skinTone);
+    formData.append("userProfileInfo.age", profileWithoutBodyImageUrl.age);
+    formData.append("userProfileInfo.gender", profileWithoutBodyImageUrl.gender);
+    formData.append("userProfileInfo.height", profileWithoutBodyImageUrl.height);
+    formData.append("userProfileInfo.weight", profileWithoutBodyImageUrl.weight);
+    formData.append("userProfileInfo.skinTone", profileWithoutBodyImageUrl.skinTone);
 
     clothingItems.forEach((item, index) => {
         if (item.file) {

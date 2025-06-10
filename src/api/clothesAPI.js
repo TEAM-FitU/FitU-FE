@@ -1,0 +1,152 @@
+// ai 의류 분석 API
+export const analyzeClothingImage = async (imageFile) => {
+    const formData = new FormData();
+    formData.append("clothesImage", imageFile);
+
+    const response = await fetch("http://localhost:8080/clothes/image-analysis", {
+        method: "POST",
+        body: formData,
+    });
+
+    if (!response.ok) {
+        // 에러를 던져서 analyzeClothingImage를 호출한 쪽에서 처리
+        throw new Error();
+    }
+    return await response.json();
+};
+
+// 사용자 프로필, 옷장 등록 api
+export const registerUserWithCloset = async (profileData, clothingItems) => {
+    const formData = new FormData();
+
+    const { userBodyImage, ...profileWithoutBodyImage } = profileData;
+
+    if (userBodyImage) {
+        formData.append("userBodyImage", userBodyImage);
+    }
+
+    // DTO 바인딩을 쉽게 처리하기 위해
+    formData.append("age", profileWithoutBodyImage.age);
+    formData.append("gender", profileWithoutBodyImage.gender);
+    formData.append("height", profileWithoutBodyImage.height);
+    formData.append("weight", profileWithoutBodyImage.weight);
+    formData.append("skinTone", profileWithoutBodyImage.skinTone);
+
+    clothingItems.forEach((item, index) => {
+        // 의류 이미지
+        formData.append(`clothesItems[${index}].clothesImage`, item.file);
+        // 속성들, 주의 사항: 프론트에서 type, category는 백엔드에서 category, type으로 매핑
+        formData.append(`clothesItems[${index}].type`, item.attributes.category);
+        formData.append(`clothesItems[${index}].category`, item.attributes.type);
+        formData.append(`clothesItems[${index}].pattern`, item.attributes.pattern);
+        formData.append(`clothesItems[${index}].color`, item.attributes.tone);
+    });
+
+    const response = await fetch("http://localhost:8080/clothes", {
+        method: "POST",
+        body: formData,
+    });
+
+    if (!response.ok) {
+        throw new Error();
+    }
+    const result = await response.json();
+    return result.data; // 사용자 uuid값 반환
+};
+
+// 초기 옷장 조회 API
+export const fetchClosetItems = async (userId) => {
+    const response = await fetch("http://localhost:8080/clothes", {
+        method: "GET",
+        headers: { "Fitu-User-UUID": userId },
+    });
+
+    if (!response.ok) {
+        throw new Error();
+    }
+
+    const result = await response.json();
+    return result.data;
+};
+
+// 필터링 조회 api
+export const fetchFilteredClothes = async (userId, filters) => {
+    const category = filters.category || [];
+    const type = filters.type || [];
+    const pattern = filters.pattern || [];
+    const tone = filters.tone || [];
+
+    // 백엔드에서 type -> categories, category -> types로 받음 또한 tone 대신 colors로 받음
+    const requestBody = {
+        categories: type,
+        types: category,
+        patterns: pattern,
+        colors: tone,
+    };
+    const response = await fetch("http://localhost:8080/clothes/filter", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Fitu-User-UUID": userId,
+        },
+        body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) {
+        throw new Error(`필터링 실패: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result.data;
+};
+
+// 업데이트 api
+export const updateClothesItem = async (userId, clothesId, updateData) => {
+    const formData = new FormData();
+
+    if (updateData.prevImage) {
+        formData.append("prevImage", updateData.prevImage);
+    }
+
+    if (updateData.newImage) {
+        formData.append("newImage", updateData.newImage);
+    }
+
+    formData.append("type", updateData.category);
+    formData.append("category", updateData.type);
+    formData.append("pattern", updateData.pattern);
+    formData.append("color", updateData.tone);
+
+    const response = await fetch(`http://localhost:8080/clothes/${clothesId}`, {
+        method: "PATCH",
+        headers: {
+            // FormData를 사용하면 Content-Type은 자동으로 multipart/form-data로 설정됨
+            // Content-Type을 명시적으로 설정하지 않음
+            "Fitu-User-UUID": userId,
+        },
+        body: formData,
+    });
+
+    if (!response.ok) {
+        throw new Error(`의류 수정 실패: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result.data;
+};
+
+export const deleteClothesItem = async (userId, clothesId) => {
+    const response = await fetch(`http://localhost:8080/clothes/${clothesId}`, {
+        method: "DELETE",
+        headers: {
+            "Fitu-User-UUID": userId,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`의류 삭제 실패: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result.data;
+};

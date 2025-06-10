@@ -67,7 +67,7 @@ const RecommendationResultPage = () => {
                         ))}
                     </Slider>
                 </div>
-                <div className="rounded bg-white border border-gray-200 w-full h-[300px] p-6 text-gray-700 text-base overflow-y-auto mt-[70px]">
+                <div className="rounded bg-white border border-gray-100 w-full h-[300px] p-6 text-base overflow-y-auto mt-[70px]">
                     <p className="whitespace-pre-line text-black mb-[10px]"> {/* 조합 텍스트 강조 */}
                         {currentContent.clothesCombination}
                     </p>

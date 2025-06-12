@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { UNSAFE_SingleFetchRedirectSymbol, useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
+import { recommendOutfit } from "../../api/recommendationAPI";
 
 const SetSituationPage = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     occasion: "",
     time: "",
@@ -10,6 +14,7 @@ const SetSituationPage = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -52,15 +57,32 @@ const SetSituationPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
+      setIsLoading(true);
       console.log("Form data is valid:", formData);
+
+      const userId = localStorage.getItem("userId");
+      const response = await recommendOutfit("9f4d3e1a-7c42-4c23-9f36-6beecb27b214", formData);
+
+      setIsLoading(false);
+      navigate("/recommendation-result", { state: { recommendationData: response } });
     } else {
       console.log("Form validation failed", errors);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-[#F7F7F7] items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-black mb-4"></div>
+        <p className="text-black text-[20px] font-bold">코디를 추천하는 중입니다...</p>
+        <p className="text-[#828282] text-[14px] mt-2">잠시만 기다려 주세요.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F7F7]">

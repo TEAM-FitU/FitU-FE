@@ -205,7 +205,7 @@ const MyClosetPage = () => {
 
             <main className='myCloset-main xl:max-w-7xl mx-auto flex flex-col'>
                 <div className='mb-4 w-full'>
-                    <h1 className='text-[2rem] font-bold text-center text-black mb-[4.375rem] mt-[7.5rem]'>나의 옷장</h1>
+                    <h1 className='text-[2rem] font-bold text-center text-black mb-[4.375rem] mt-[7.5rem]'>내 옷장😊</h1>
                     {/* 필터와 옷 추가하기 */}
                     <div className='myCloset-main__div flex flex-col sm:flex-row justify-between items-center sm:space-x-4'>
                         {/* 필터는 왼쪽에 */}
@@ -216,7 +216,7 @@ const MyClosetPage = () => {
 
                         <Link
                             to='/closet-add'
-                            className='flex items-center bg-black text-white  h-[2.8125rem] text-[1rem] font-semibold px-3 py-2 rounded-md hover:bg-gray-800 transition-colors whitespace-nowrap cursor-pointer'
+                            className='flex items-center bg-black text-white  h-[2.5rem] text-[1rem] font-semibold px-3 py-2 rounded-md hover:bg-gray-800 transition-colors whitespace-nowrap cursor-pointer'
                         >
                             <PlusIcon className='w-4 h-4 mr-1 fill-white stroke-white' />옷 추가하기
                         </Link>
@@ -252,8 +252,8 @@ const MyClosetPage = () => {
                     </div>
                 ) : (
                     <div className='bg-white p-12 text-center text-gray-500 shadtow-lg rounded-xl'>
-                        <p className='text-gray-500 text-lg mb-2'>옷장이 비어있습니다</p>
-                        <p className='text-gray-400 text-sm mb-4'>옷을 추가하여 나만의 옷장을 채워보세요</p>
+                        <p className='text-gray-500 text-lg mb-2'>옷장이 비어있습니다.</p>
+                        <p className='text-gray-400 text-sm mb-4'>옷을 추가하여 나만의 옷장을 채워보세요!</p>
                     </div>
                 )}
             </main>

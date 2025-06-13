@@ -4,7 +4,7 @@ export const analyzeBodyImage = async (imageFile) => {
 
     formData.append("bodyImage", imageFile);
 
-    const response = await fetch("http://localhost:8080/user/profile/image-analysis", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/user/profile/image-analysis`, {
         method: "POST",
         body: formData,
     });
@@ -18,7 +18,7 @@ export const analyzeBodyImage = async (imageFile) => {
 
 // 프로필 조회 API
 export const fetchProfile = async (userId) => {
-    const response = await fetch("http://localhost:8080/user/profile", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
         method: "GET",
         headers: { "Fitu-User-UUID": userId },
     });
@@ -34,7 +34,7 @@ export const fetchProfile = async (userId) => {
 
 // 프로필 수정 API
 export const updateProfile = async (userId, updateData) => {
-    const response = await fetch("http://localhost:8080/user/profile", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",

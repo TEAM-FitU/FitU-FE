@@ -1,8 +1,21 @@
-import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import MAIN_BG from "../assets/main-bg.jpg";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+
+    const navigate = useNavigate();
+    
+    const handleStartClick = () => {
+    const userId = localStorage.getItem("userId");
+      if (userId) {
+        navigate("/set-situation");
+      } else {
+        navigate("/set-profile");
+      }
+  };
+
+
   return (
     <div>
       <Header/>
@@ -22,12 +35,12 @@ const HomePage = () => {
           </p>
 
           {/* TODO 등록한 회원인 경우 바로 상황 입력 페이지로 이동 */}
-          <Link
-            to="/set-profile"
+          <button
+            onClick={handleStartClick}
             className="cursor-pointer shadow px-10 py-2 bg-white text-black text-base font-bold rounded mt-2 text-center"
           >
             시작하기
-          </Link>
+          </button>
         </div>
       </section>
 

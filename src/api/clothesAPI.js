@@ -3,7 +3,7 @@ export const analyzeClothingImage = async (imageFile) => {
     const formData = new FormData();
     formData.append("clothesImage", imageFile);
 
-    const serverResponse = await fetch("http://localhost:8080/clothes/image-analysis", {
+    const serverResponse = await fetch(`${import.meta.env.VITE_API_URL}/clothes/image-analysis`, {
         method: "POST",
         body: formData,
     });
@@ -13,25 +13,27 @@ export const analyzeClothingImage = async (imageFile) => {
     }
 
     const response = await serverResponse.json();
+    
     return response.data;
 };
 
 // 사용자 프로필, 옷장 등록 api
 export const registerUserWithCloset = async (profileData, clothingItems) => {
+
     const formData = new FormData();
 
-    const { userBodyImage, ...profileWithoutBodyImage } = profileData;
+    const { bodyImageUrl, ...profileWithoutBodyImageUrl } = profileData;
 
-    if (userBodyImage) {
-        formData.append("userBodyImage", userBodyImage);
+    if (bodyImageUrl) {
+        formData.append("userProfileInfo.bodyImageUrl", bodyImageUrl);
     }
 
     // DTO 바인딩을 쉽게 처리하기 위해
-    formData.append("age", profileWithoutBodyImage.age);
-    formData.append("gender", profileWithoutBodyImage.gender);
-    formData.append("height", profileWithoutBodyImage.height);
-    formData.append("weight", profileWithoutBodyImage.weight);
-    formData.append("skinTone", profileWithoutBodyImage.skinTone);
+    formData.append("userProfileInfo.age", profileWithoutBodyImageUrl.age);
+    formData.append("userProfileInfo.gender", profileWithoutBodyImageUrl.gender);
+    formData.append("userProfileInfo.height", profileWithoutBodyImageUrl.height);
+    formData.append("userProfileInfo.weight", profileWithoutBodyImageUrl.weight);
+    formData.append("userProfileInfo.skinTone", profileWithoutBodyImageUrl.skinTone);
 
     clothingItems.forEach((item, index) => {
         if (item.file) {
@@ -48,7 +50,7 @@ export const registerUserWithCloset = async (profileData, clothingItems) => {
         formData.append(`clothesItems[${index}].color`, item.attributes.tone);
     });
 
-    const response = await fetch("http://localhost:8080/clothes/registration", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes/registration`, {
         method: "POST",
         body: formData,
     });
@@ -78,7 +80,7 @@ export const registerNewClosetItems = async (clothingItems, userId) => {
         formData.append(`clothesItems[${index}].color`, item.attributes.tone);
     });
 
-    const response = await fetch("http://localhost:8080/clothes", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes`, {
         method: "POST",
         headers: {
             "Fitu-User-UUID": userId,
@@ -95,7 +97,7 @@ export const registerNewClosetItems = async (clothingItems, userId) => {
 
 // 초기 옷장 조회 API
 export const fetchClosetItems = async (userId) => {
-    const response = await fetch("http://localhost:8080/clothes", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes`, {
         method: "GET",
         headers: { "Fitu-User-UUID": userId },
     });
@@ -122,7 +124,7 @@ export const fetchFilteredClothes = async (userId, filters) => {
         patterns: pattern,
         colors: tone,
     };
-    const response = await fetch("http://localhost:8080/clothes/filter", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes/filter`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -156,7 +158,7 @@ export const updateClothesItem = async (userId, clothesId, updateData) => {
     formData.append("pattern", updateData.pattern);
     formData.append("color", updateData.tone);
 
-    const response = await fetch(`http://localhost:8080/clothes/${clothesId}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes/${clothesId}`, {
         method: "PATCH",
         headers: {
             // FormData를 사용하면 Content-Type은 자동으로 multipart/form-data로 설정됨
@@ -175,7 +177,7 @@ export const updateClothesItem = async (userId, clothesId, updateData) => {
 };
 
 export const deleteClothesItem = async (userId, clothesId) => {
-    const response = await fetch(`http://localhost:8080/clothes/${clothesId}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/${clothesId}`, {
         method: "DELETE",
         headers: {
             "Fitu-User-UUID": userId,

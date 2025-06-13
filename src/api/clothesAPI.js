@@ -177,7 +177,7 @@ export const updateClothesItem = async (userId, clothesId, updateData) => {
 };
 
 export const deleteClothesItem = async (userId, clothesId) => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/${clothesId}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes/${clothesId}`, {
         method: "DELETE",
         headers: {
             "Fitu-User-UUID": userId,

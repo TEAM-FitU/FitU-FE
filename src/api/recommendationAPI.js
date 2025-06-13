@@ -6,7 +6,7 @@ export const recommendOutfit = async (userId, formData) => {
         useOnlyClosetItems: formData.onlyCloset
     };
   
-    const response = await fetch("http://localhost:8080/recommendation", {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/recommendation`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

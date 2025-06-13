@@ -3,7 +3,7 @@ export const analyzeClothingImage = async (imageFile) => {
     const formData = new FormData();
     formData.append("clothesImage", imageFile);
 
-    const serverResponse = await fetch(`${process.env.REACT_APP_API_URL}/clothes/image-analysis`, {
+    const serverResponse = await fetch(`${import.meta.env.VITE_API_URL}/clothes/image-analysis`, {
         method: "POST",
         body: formData,
     });
@@ -50,7 +50,7 @@ export const registerUserWithCloset = async (profileData, clothingItems) => {
         formData.append(`clothesItems[${index}].color`, item.attributes.tone);
     });
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/clothes/registration`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes/registration`, {
         method: "POST",
         body: formData,
     });
@@ -80,7 +80,7 @@ export const registerNewClosetItems = async (clothingItems, userId) => {
         formData.append(`clothesItems[${index}].color`, item.attributes.tone);
     });
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/clothes`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes`, {
         method: "POST",
         headers: {
             "Fitu-User-UUID": userId,
@@ -97,7 +97,7 @@ export const registerNewClosetItems = async (clothingItems, userId) => {
 
 // 초기 옷장 조회 API
 export const fetchClosetItems = async (userId) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/clothes`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes`, {
         method: "GET",
         headers: { "Fitu-User-UUID": userId },
     });
@@ -124,7 +124,7 @@ export const fetchFilteredClothes = async (userId, filters) => {
         patterns: pattern,
         colors: tone,
     };
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/clothes/filter`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes/filter`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -158,7 +158,7 @@ export const updateClothesItem = async (userId, clothesId, updateData) => {
     formData.append("pattern", updateData.pattern);
     formData.append("color", updateData.tone);
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/clothes/${clothesId}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/clothes/${clothesId}`, {
         method: "PATCH",
         headers: {
             // FormData를 사용하면 Content-Type은 자동으로 multipart/form-data로 설정됨
@@ -177,7 +177,7 @@ export const updateClothesItem = async (userId, clothesId, updateData) => {
 };
 
 export const deleteClothesItem = async (userId, clothesId) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/${clothesId}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/${clothesId}`, {
         method: "DELETE",
         headers: {
             "Fitu-User-UUID": userId,

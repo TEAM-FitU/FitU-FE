@@ -90,7 +90,7 @@ const ProfileForm = ({ profile, setProfile, handleSubmit, isEdit, disabled }) =>
                                 value={profile.height}
                                 onChange={handleChange}
                                 placeholder='키'
-                                min={0}
+                                min={100}
                                 max={250}
                                 pattern='[0-9]*'
                                 required
@@ -107,8 +107,8 @@ const ProfileForm = ({ profile, setProfile, handleSubmit, isEdit, disabled }) =>
                                 value={profile.weight}
                                 onChange={handleChange}
                                 placeholder='몸무게'
-                                min={3}
-                                max={200}
+                                min={30}
+                                max={300}
                                 pattern='[0-9]*'
                                 required
                                 className='h-[43px] w-[60px] px-2 border-none focus:ring-0 focus:outline-none bg-transparent text-center appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield] placeholder:text-sm'

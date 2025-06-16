@@ -7,6 +7,7 @@ import BodyImageUploader from "../components/BodyImageUploader";
 import useUserStore from "../store/userStore";
 import { analyzeBodyImage } from "../api/profileAPI";
 import toast from "react-hot-toast";
+import { RingLoader } from "react-spinners";
 
 const SetprofilePage = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -19,6 +20,15 @@ const SetprofilePage = () => {
   const { profile, setProfile, setBodyImageUrl } = useUserStore();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (profile.bodyImageUrl != null) {
+      setUploadedImage({
+        file: null,
+        preview: profile.bodyImageUrl,
+      });
+    }
+  }, []);
 
   const handleImageUpload = async (file, preview) => {
     setIsLoading(true);
@@ -63,7 +73,7 @@ const SetprofilePage = () => {
     setUploadedImage(null);
 
     setBodyImageUrl(null); // 전역 상태에서도 제거
-    
+
     setIsAnalyzed(false);
   };
 
@@ -78,7 +88,13 @@ const SetprofilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F7F7]">
+    <div className="min-h-screen bg-[#F7F7F7] relative">
+      {isAnalysisInProgress && (
+        <div className='absolute top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-white/60 flex flex-col items-center justify-center z-20 rounded-xl'>
+          <RingLoader color='#6366F1' size={50} />
+          <p className='mt-3 font-medium text-zinc-700'>전신 사진 여부를 확인 중...</p>
+        </div>
+      )}
       <Header />
       <h1 className="pt-[7.5rem] text-[2rem] font-bold text-center">FitU</h1>
       <ProgressBar activeStep={1} />

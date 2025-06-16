@@ -6,6 +6,7 @@ import BodyImageUploader from "../components/BodyImageUploader";
 import useUserStore from "../store/userStore";
 import { analyzeBodyImage, fetchProfile, updateProfile } from "../api/profileAPI";
 import toast from "react-hot-toast";
+import { RingLoader } from "react-spinners";
 
 const MyProfilePage = () => {
     const [uploadedImage, setUploadedImage] = useState(null);
@@ -121,9 +122,16 @@ const MyProfilePage = () => {
 
     return (
         <>
-            <div className="min-h-screen bg-[#F7F7F7]">
+            <div className="min-h-screen bg-[#F7F7F7] relative">
+                {isAnalysisInProgress && (
+                    <div className='absolute top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-white/60 flex flex-col items-center justify-center z-20 rounded-xl'>
+                        <RingLoader color='#6366F1' size={50} />
+                        <p className='mt-3 font-medium text-zinc-700'>전신 사진 여부를 확인 중...</p>
+                    </div>
+                )}
                 <Header />
                 <h1 className="pt-[7.5rem] text-[2rem] font-bold text-center">내 프로필</h1>
+
                 <div className="flex flex-col items-center mt-[3.75rem]">
                     <BodyImageUploader
                         ref={imageUploaderRef}

@@ -65,7 +65,7 @@ const SetSituationPage = () => {
       console.log("Form data is valid:", formData);
 
       const userId = localStorage.getItem("userId");
-      const response = await recommendOutfit("9f4d3e1a-7c42-4c23-9f36-6beecb27b214", formData);
+      const response = await recommendOutfit(userId, formData);
 
       setIsLoading(false);
       navigate("/recommendation-result", { state: { recommendationData: response } });

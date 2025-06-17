@@ -22,7 +22,7 @@ const CompletePage = () => {
                 </p>
                 {/* TODO 상황 입력 페이지로 이동 */}
                 <Link
-                    to="/"
+                    to="/set-situation"
                     className="shadow cursor-pointer h-[43px] px-[1.375rem] py-[11px] bg-black text-[1rem] text-white rounded-lg text-center flex items-center justify-center"
                 >
                     상황 입력하고 코디 추천 받기

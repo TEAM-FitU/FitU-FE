@@ -160,6 +160,7 @@ const SetSituationPage = () => {
                 <input
                   type="checkbox"
                   id="onlyCloset"
+                  name="onlyCloset"
                   className="w-[20px] h-[20px] border-[#828282] accent-black"
                   checked={formData.onlyCloset}
                   onChange={handleChange}

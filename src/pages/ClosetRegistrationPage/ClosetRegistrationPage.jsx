@@ -160,21 +160,17 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
         });
     };
 
-    // 의류 카테고리 유효성 검사 추가
     const checkClothingRequirements = () => {
-        // 상의와 하의가 각각 1개 이상 있는지 확인 (원피스는 상의+하의로 간주)
-        const hasTop = waitlistItems.some((item) => item.attributes.category === "TOP");
-        const hasBottom = waitlistItems.some((item) => item.attributes.category === "BOTTOM");
-        const hasOnePiece = waitlistItems.some((item) => item.attributes.category === "ONEPIECE");
+        const topItems = waitlistItems.filter((item) => item.attributes.category === "TOP");
+        const bottomItems = waitlistItems.filter((item) => item.attributes.category === "BOTTOM");
 
-        // 원피스가 있거나 (상의 + 하의)가 있으면 유효
+        const possiblePairs = Math.min(topItems.length, bottomItems.length);
+
         return {
-            hasTop,
-            hasBottom,
-            hasOnePiece,
-            isValid: hasOnePiece || (hasTop && hasBottom),
+            isValid: possiblePairs >= 3,
         };
     };
+
     const handleNavigation = async (path) => {
         // 기존 사용자 내 옷장 -> 추가하기시에는 하나만 있으면 등록
         const userId = localStorage.getItem("userId");
@@ -215,7 +211,7 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
                 setIsRegistering(false);
             }
         } else {
-            alert("최소한 원피스 1벌 또는 상의와 하의를 각각 1벌씩 추가해야 합니다.");
+            alert("스타일 제안을 위해 상의 3개와 하의 3개 이상 등록해 주세요.");
         }
     };
 

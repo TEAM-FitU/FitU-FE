@@ -20,7 +20,7 @@ const RecommendationResultPage = () => {
 
     const recommendationData = location.state?.recommendationData;
 
-    const { summary, contents } = recommendationData;
+    const { summary, weather, contents } = recommendationData;
 
     const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
 
@@ -53,13 +53,28 @@ const RecommendationResultPage = () => {
                         ))}
                     </Slider>
                 </div>
-                <div className="rounded bg-white border border-gray-100 w-full h-[300px] p-6 text-base overflow-y-auto mt-[70px]">
-                    <p className="whitespace-pre-line text-black mb-[10px]"> {/* 조합 텍스트 강조 */}
+                <div className="rounded bg-white border border-gray-100 w-full h-[415px] p-6 text-base overflow-y-auto mt-[70px]">
+                    <p className="whitespace-pre-line text-black mb-[10px]">
+                        ✨ {weather}
+                    </p>
+                    <p className="whitespace-pre-line text-black mb-[10px]">
                         {currentContent.clothesCombination}
                     </p>
-                    <p className="whitespace-pre-line text-black">
+                    <p className="whitespace-pre-line text-black mb-[30px]">
                         {currentContent.description}
                     </p>
+                    {currentContent.clothesImageUrls && currentContent.clothesImageUrls.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4 justify-center">
+                            {currentContent.clothesImageUrls.map((imgUrl, idx) => (
+                                <img
+                                    key={idx}
+                                    src={imgUrl}
+                                    alt={`Recommended piece ${idx + 1}`}
+                                    className="w-24 h-24 object-cover rounded-md border border-gray-200"
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </main>

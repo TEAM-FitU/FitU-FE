@@ -8,15 +8,21 @@ import MODEL_IMG3 from "../../assets/model3.png";
 const imageGroup = [
     {
         src: MODEL_IMG1,
-        description: "린넨 혼방 반팔 셔츠 – 여름철 시원하게 입기 좋아요."
+        keyword: "데이트",
+        title: "로맨틱한 무드의 플라워 롱 원피스",
+        description: "은은한 플라워 패턴이 돋보이는 롱 원피스예요. 야외 데이트에 부담 없이 착용할 수 있고, 자연스러운 퍼프 소매가 러블리한 분위기를 더해줍니다. "
     },
     {
         src: MODEL_IMG2,
-        description: "베이지 톤의 캐주얼 팬츠 – 어디에나 잘 어울려요."
+        keyword: "캠핑",
+        title: "활동은 자유롭게, 관리도 손쉽게",
+        description: "선선한 바람. 흡습속건 티셔츠라 땀에 금방 마르고 구김 걱정도 적어요. 조거 팬츠와 바로 매치하면 깔끔한 캠핑룩 완성."
     },
     {
         src: MODEL_IMG3,
-        description: "기본 블랙 반팔 – 심플하고 깔끔한 느낌!"
+        keyword: "여름 데일리",
+        title: "시원하고 깔끔한 반팔 셔츠 스타일",
+        description: "산뜻한 화이트 반팔 셔츠와 네이비 팬츠의 조합으로 누구나 부담 없이 입을 수 있는 데일리룩이에요."
     }
 ];
 
@@ -70,10 +76,11 @@ const ImageGallerySection = () => {
                                 <img src={selectedImage.src} alt={selectedImage.description} />
 
                                 <div className="modal-description">
-                                    <p className="text-m font-bold">캠핑</p>
-                                    <p className="text-2xl font-bold mb-2">활동은 자유롭게, 관리도 손쉽게</p>
+                                    <p className="text-m font-bold">{selectedImage.keyword}</p>
+                                    <p className="text-2xl font-bold mb-2">{selectedImage.title}</p>
                                     <p className="text-lg">
-                                        선선한 바람. 흡습속건 블랙 티셔츠라 땀에 금방 마르고 구김 걱정도 적어요. 데님이나 조거 팬츠와 바로 매치하면 깔끔한 캠핑룩 완성.</p>
+                                        {selectedImage.description}
+                                    </p>
                                 </div>
                             </motion.div>
                         </motion.div>

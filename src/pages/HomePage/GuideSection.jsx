@@ -30,7 +30,7 @@ const GuideSection = () => {
           <div className="flex flex-col items-center">
             <h2 className="text-2xl font-semibold mb-3 tracking-wide">TIME</h2>
             <p className="text-base text-gray-600 leading-relaxed">
-              날짜에 따라 <br />찾고 계신가요?
+              원하는 날짜에 맞는 코디를 <br />찾고 계신가요?
             </p>
           </div>
 
@@ -45,7 +45,7 @@ const GuideSection = () => {
             <h2 className="text-2xl font-semibold mb-3 tracking-wide">OCCASION</h2>
             <p className="text-base text-gray-600 leading-relaxed">
               데이트, 여행 등 상황에 맞는 <br />
-              코디를 원하시나요?
+              코디를 고민하고 계신가요?
             </p>
           </div>
         </div>

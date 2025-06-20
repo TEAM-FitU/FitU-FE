@@ -160,6 +160,7 @@ const SetSituationPage = () => {
                 <input
                   type="checkbox"
                   id="onlyCloset"
+                  name="onlyCloset"
                   className="w-[20px] h-[20px] border-[#828282] accent-black"
                   checked={formData.onlyCloset}
                   onChange={handleChange}
@@ -167,7 +168,7 @@ const SetSituationPage = () => {
                 <span className="text-[14px] text-black">옷장 속 의상만 추천받기</span>
               </label>
             </div>
-            <button type="submit" className="h-[45px] rounded bg-black text-[16px] text-white">
+            <button type="submit" className="h-[45px] rounded bg-black text-[16px] text-white mb-12">
               코디 추천 받기
             </button>
           </form>

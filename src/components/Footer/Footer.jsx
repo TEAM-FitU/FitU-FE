@@ -14,11 +14,6 @@ const Footer = () => {
         <div className="footer-desc text-xs text-white opacity-70">
           AI가 추천하는 나만의 코디, FitU 에서 경험하세요.
         </div>
-        {/* <div className="footer-links">
-          <a href="/">About</a>
-          <a href="/">Privacy Policy</a>
-          <a href="/">Contact</a>
-        </div> */}
         <div className="footer-copy text-xs text-white opacity-60">
           &copy; {currentYear} FitU. All rights reserved.
         </div>

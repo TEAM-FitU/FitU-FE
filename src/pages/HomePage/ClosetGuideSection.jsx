@@ -1,10 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import GUIDE_IMAGE from "../../assets/mock-up-closet.png"; // 실제 의상 등록 목업 이미지 경로로 교체
+import GUIDE_IMAGE from "../../assets/mock-up-closet.png";
 
 const ClosetGuideSection = () => (
   <section className="w-full h-screen flex flex-col md:flex-row items-center justify-center bg-white px-4">
-    {/* 이미지 왼쪽 */}
     <div className="flex-1 flex justify-center items-center h-full md:pl-24">
       <img
         src={GUIDE_IMAGE}
@@ -12,7 +11,6 @@ const ClosetGuideSection = () => (
         alt="의상 등록 목업"
       />
     </div>
-    {/* 설명 오른쪽 */}
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}

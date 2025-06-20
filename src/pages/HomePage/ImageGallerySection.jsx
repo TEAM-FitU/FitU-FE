@@ -36,9 +36,9 @@ const ImageGallerySection = () => {
                     나만의 추천 코디, FitU
                 </h2>
                 <p className="text-center text-[#828282] text-base font-medium -mt-8 mb-8">
-        AI가 추천한 코디예요.<br />
-        이미지를 클릭하면 자세히 볼 수 있어요!
-    </p>
+                    AI가 추천한 코디예요.<br />
+                    이미지를 클릭하면 자세히 볼 수 있어요!
+                </p>
                 <div className="image-gallery-container w-full">
                     {imageGroup.map((item, idx) => (
                         <motion.div

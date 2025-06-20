@@ -60,7 +60,7 @@ const HomePage = () => {
       <ClosetGuideSection />
       <SituationGuideSection />
       <ImageGallerySection />
-      
+
 
       <Footer />
     </div>

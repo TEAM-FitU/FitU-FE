@@ -220,7 +220,7 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
             {isAnalysisInProgress && (
                 <div className='absolute top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-white/60 flex flex-col items-center justify-center z-20 rounded-xl'>
                     {/* <ClipLoader color='#8B5CF6' size={50} /> */}
-                    <RingLoader color='#6366F1' size={50} />
+                    <RingLoader color='#000' size={50} />
                     <p className='mt-3 font-medium text-zinc-700'>의상 분석 중...</p>
                 </div>
             )}
@@ -228,7 +228,7 @@ const ClosetRegistrationPage = ({ showProgress = true, title = "FitU" }) => {
             {/* 전체 화면 로딩 오버레이 - 등록 중일 때만 표시 */}
             {isRegistering && (
                 <div className='absolute top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-white/60 flex flex-col items-center justify-center z-20 rounded-xl'>
-                    <RingLoader color='#6366F1' size={50} />
+                    <RingLoader color='#000' size={50} />
                     <p className='mt-3 font-medium text-zinc-700'>의상 등록 중...</p>
                 </div>
             )}

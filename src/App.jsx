@@ -6,7 +6,7 @@ import RecommendationResultPage from './pages/RecommendationResultPage/Recommend
 import ClosetRegistrationPage from "./pages/ClosetRegistrationPage/ClosetRegistrationPage.jsx";
 import MyClosetPage from "./pages/MyClosetPage/MyClosetPage.jsx";
 import SetProfilePage from "./pages/SetProfilePage";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/HomePage/HomePage.jsx";
 import MyProfilePage from "./pages/MyProfilePage";
 import CompletePage from "./pages/CompletePage.jsx";
 

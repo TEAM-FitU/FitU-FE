@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { UNSAFE_SingleFetchRedirectSymbol, useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import { recommendOutfit } from "../../api/recommendationAPI";
+import { RingLoader } from "react-spinners";
 
 const SetSituationPage = () => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ const SetSituationPage = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col bg-[#F7F7F7] items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-black mb-4"></div>
+        <RingLoader color='#000' size={50} />
         <p className="text-black text-[20px] font-bold">코디를 추천하는 중입니다...</p>
         <p className="text-[#828282] text-[14px] mt-2">잠시만 기다려 주세요.</p>
       </div>
@@ -168,7 +169,7 @@ const SetSituationPage = () => {
                 <span className="text-[14px] text-black">옷장 속 의상만 추천받기</span>
               </label>
             </div>
-            <button type="submit" className="h-[45px] rounded bg-black text-[16px] text-white">
+            <button type="submit" className="h-[45px] rounded bg-black text-[16px] text-white mb-12">
               코디 추천 받기
             </button>
           </form>
